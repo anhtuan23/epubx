@@ -1,24 +1,21 @@
-import 'package:quiver/collection.dart' as collections;
-import 'package:quiver/core.dart';
+import 'package:equatable/equatable.dart';
 
-class EpubNavigationDocAuthor {
-  List<String>? authors;
+class EpubNavigationDocAuthor extends Equatable {
+  final List<String>? authors;
 
-  EpubNavigationDocAuthor() {
-    authors = <String>[];
+  EpubNavigationDocAuthor({List<String>? authors})
+      : authors = authors ?? <String>[];
+
+  EpubNavigationDocAuthor copyWith({
+    List<String>? authors,
+  }) {
+    return EpubNavigationDocAuthor(
+      authors: authors ?? this.authors,
+    );
   }
 
   @override
-  int get hashCode {
-    var objects = [...authors!.map((author) => author.hashCode)];
-    return hashObjects(objects);
-  }
-
-  @override
-  bool operator ==(other) {
-    var otherAs = other as EpubNavigationDocAuthor?;
-    if (otherAs == null) return false;
-
-    return collections.listsEqual(authors, otherAs.authors);
-  }
+  List<Object?> get props => [
+        if (authors != null) ...authors!,
+      ];
 }

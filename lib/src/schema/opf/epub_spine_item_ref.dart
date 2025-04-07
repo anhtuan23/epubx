@@ -1,24 +1,24 @@
-import 'package:quiver/core.dart';
+import 'package:equatable/equatable.dart';
 
-class EpubSpineItemRef {
-  String? idRef;
-  bool? isLinear;
+class EpubSpineItemRef extends Equatable {
+  final String? idRef;
+  final bool? linear;
 
-  @override
-  int get hashCode => hash2(idRef.hashCode, isLinear.hashCode);
-
-  @override
-  bool operator ==(other) {
-    var otherAs = other as EpubSpineItemRef?;
-    if (otherAs == null) {
-      return false;
-    }
-
-    return idRef == otherAs.idRef && isLinear == otherAs.isLinear;
-  }
+  const EpubSpineItemRef({
+    this.idRef,
+    this.linear,
+  });
 
   @override
-  String toString() {
-    return 'IdRef: $idRef';
+  List<Object?> get props => [idRef, linear];
+
+  EpubSpineItemRef copyWith({
+    String? idRef,
+    bool? linear,
+  }) {
+    return EpubSpineItemRef(
+      idRef: idRef ?? this.idRef,
+      linear: linear ?? this.linear,
+    );
   }
 }

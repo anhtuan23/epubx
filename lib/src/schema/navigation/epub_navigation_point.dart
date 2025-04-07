@@ -1,52 +1,53 @@
-import 'package:quiver/collection.dart' as collections;
-import 'package:quiver/core.dart';
+import 'package:epubx/src/schema/navigation/epub_metadata.dart';
+import 'package:equatable/equatable.dart';
 
-import 'epub_metadata.dart';
 import 'epub_navigation_label.dart';
 
-class EpubNavigationPoint {
-  String? id;
-  String? klass;
-  String? playOrder;
-  List<EpubNavigationLabel>? navigationLabels;
-  EpubNavigationContent? content;
-  List<EpubNavigationPoint>? childNavigationPoints;
+class EpubNavigationPoint extends Equatable {
+  final String? id;
+  final String? className;
+  final String? playOrder;
+  final List<EpubNavigationLabel>? navigationLabels;
+  final EpubNavigationContent? content;
+  final List<EpubNavigationPoint>? childNavigationPoints;
 
-  @override
-  int get hashCode {
-    var objects = [
-      id.hashCode,
-      klass.hashCode,
-      playOrder.hashCode,
-      content.hashCode,
-      ...navigationLabels!.map((label) => label.hashCode),
-      ...childNavigationPoints!.map((point) => point.hashCode)
-    ];
-    return hashObjects(objects);
+  EpubNavigationPoint({
+    this.id,
+    this.className,
+    this.playOrder,
+    List<EpubNavigationLabel>? navigationLabels,
+    this.content,
+    List<EpubNavigationPoint>? childNavigationPoints,
+  })  : navigationLabels = navigationLabels ?? <EpubNavigationLabel>[],
+        childNavigationPoints =
+            childNavigationPoints ?? <EpubNavigationPoint>[];
+
+  EpubNavigationPoint copyWith({
+    String? id,
+    String? className,
+    String? playOrder,
+    List<EpubNavigationLabel>? navigationLabels,
+    EpubNavigationContent? content,
+    List<EpubNavigationPoint>? childNavigationPoints,
+  }) {
+    return EpubNavigationPoint(
+      id: id ?? this.id,
+      className: className ?? this.className,
+      playOrder: playOrder ?? this.playOrder,
+      navigationLabels: navigationLabels ?? this.navigationLabels,
+      content: content ?? this.content,
+      childNavigationPoints:
+          childNavigationPoints ?? this.childNavigationPoints,
+    );
   }
 
   @override
-  bool operator ==(other) {
-    var otherAs = other as EpubNavigationPoint?;
-    if (otherAs == null) {
-      return false;
-    }
-
-    if (!collections.listsEqual(navigationLabels, otherAs.navigationLabels)) {
-      return false;
-    }
-
-    if (!collections.listsEqual(
-        childNavigationPoints, otherAs.childNavigationPoints)) return false;
-
-    return id == otherAs.id &&
-        klass == otherAs.klass &&
-        playOrder == otherAs.playOrder &&
-        content == otherAs.content;
-  }
-
-  @override
-  String toString() {
-    return 'Id: $id, Content.Source: ${content!.source}';
-  }
+  List<Object?> get props => [
+        id,
+        className,
+        playOrder,
+        content,
+        if (navigationLabels != null) ...navigationLabels!,
+        if (childNavigationPoints != null) ...childNavigationPoints!,
+      ];
 }

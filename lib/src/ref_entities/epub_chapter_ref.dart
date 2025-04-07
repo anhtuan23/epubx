@@ -1,7 +1,5 @@
 import 'dart:async';
-
-import 'package:quiver/collection.dart' as collections;
-import 'package:quiver/core.dart';
+import 'package:collection/collection.dart';
 
 import 'epub_text_content_file_ref.dart';
 
@@ -21,34 +19,31 @@ class EpubChapterRef {
   EpubChapterRef(this.epubTextContentFileRef);
 
   @override
-  int get hashCode {
-    var objects = [
-      title.hashCode,
-      contentFileName.hashCode,
-      hashObjects(otherTextContentFileRefs),
-      hashObjects(otherContentFileNames),
-      anchor.hashCode,
-      epubTextContentFileRef.hashCode,
-      ...subChapters?.map((subChapter) => subChapter.hashCode) ?? [0],
-    ];
-    return hashObjects(objects);
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! EpubChapterRef) return false;
+
+    final listEquals = const DeepCollectionEquality().equals;
+
+    return title == other.title &&
+        contentFileName == other.contentFileName &&
+        anchor == other.anchor &&
+        epubTextContentFileRef == other.epubTextContentFileRef &&
+        listEquals(otherTextContentFileRefs, other.otherTextContentFileRefs) &&
+        listEquals(otherContentFileNames, other.otherContentFileNames) &&
+        listEquals(subChapters, other.subChapters);
   }
 
   @override
-  bool operator ==(other) {
-    if (other is! EpubChapterRef) {
-      return false;
-    }
-    return title == other.title &&
-        epubTextContentFileRef == other.epubTextContentFileRef &&
-        contentFileName == other.contentFileName &&
-        anchor == other.anchor &&
-        collections.listsEqual(
-            otherTextContentFileRefs, other.otherTextContentFileRefs) &&
-        collections.listsEqual(
-            otherContentFileNames, other.otherContentFileNames) &&
-        collections.listsEqual(subChapters, other.subChapters);
-  }
+  int get hashCode => Object.hash(
+        title,
+        contentFileName,
+        anchor,
+        epubTextContentFileRef,
+        Object.hashAll(otherTextContentFileRefs),
+        Object.hashAll(otherContentFileNames),
+        Object.hashAll(subChapters ?? []),
+      );
 
   Future<String> readHtmlContent() async {
     var contentFuture = epubTextContentFileRef!.readContentAsText();
@@ -67,6 +62,6 @@ class EpubChapterRef {
 
   @override
   String toString() {
-    return 'Title: $title, Subchapter count: ${subChapters!.length}';
+    return 'Title: $title, Subchapter count: ${subChapters?.length ?? 0}';
   }
 }

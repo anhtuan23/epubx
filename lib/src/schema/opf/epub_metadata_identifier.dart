@@ -1,19 +1,24 @@
-import 'package:quiver/core.dart';
+import 'package:equatable/equatable.dart';
 
-class EpubMetadataIdentifier {
-  String? id;
-  String? scheme;
-  String? identifier;
+class EpubMetadataIdentifier extends Equatable {
+  final String? id;
+  final String? scheme;
+  final String? identifier;
 
-  @override
-  int get hashCode => hash3(id.hashCode, scheme.hashCode, identifier.hashCode);
+  const EpubMetadataIdentifier({this.id, this.scheme, this.identifier});
 
-  @override
-  bool operator ==(other) {
-    var otherAs = other as EpubMetadataIdentifier?;
-    if (otherAs == null) return false;
-    return id == otherAs.id &&
-        scheme == otherAs.scheme &&
-        identifier == otherAs.identifier;
+  EpubMetadataIdentifier copyWith({
+    String? id,
+    String? scheme,
+    String? identifier,
+  }) {
+    return EpubMetadataIdentifier(
+      id: id ?? this.id,
+      scheme: scheme ?? this.scheme,
+      identifier: identifier ?? this.identifier,
+    );
   }
+
+  @override
+  List<Object?> get props => [id, scheme, identifier];
 }

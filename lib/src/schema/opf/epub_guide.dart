@@ -1,29 +1,15 @@
-import 'package:quiver/collection.dart' as collections;
-import 'package:quiver/core.dart';
+import 'package:equatable/equatable.dart';
 
 import 'epub_guide_reference.dart';
 
-class EpubGuide {
-  List<EpubGuideReference>? items;
+class EpubGuide extends Equatable {
+  final List<EpubGuideReference>? items;
 
-  EpubGuide() {
-    items = <EpubGuideReference>[];
-  }
-
-  @override
-  int get hashCode {
-    var objects = [];
-    objects.addAll(items!.map((item) => item.hashCode));
-    return hashObjects(objects);
-  }
+  EpubGuide({List<EpubGuideReference>? items})
+      : items = items ?? <EpubGuideReference>[];
 
   @override
-  bool operator ==(other) {
-    var otherAs = other as EpubGuide?;
-    if (otherAs == null) {
-      return false;
-    }
-
-    return collections.listsEqual(items, otherAs.items);
-  }
+  List<Object?> get props => [
+        if (items != null) ...items!,
+      ];
 }

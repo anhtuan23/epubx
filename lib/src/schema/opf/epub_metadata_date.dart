@@ -1,16 +1,28 @@
-import 'package:quiver/core.dart';
+import 'package:equatable/equatable.dart';
 
-class EpubMetadataDate {
-  String? date;
-  String? event;
+class EpubMetadataDate extends Equatable {
+  final String? id;
+  final String? event;
+  final String? date;
 
-  @override
-  int get hashCode => hash2(date.hashCode, event.hashCode);
+  const EpubMetadataDate({
+    this.id,
+    this.event,
+    this.date,
+  });
 
-  @override
-  bool operator ==(other) {
-    var otherAs = other as EpubMetadataDate?;
-    if (otherAs == null) return false;
-    return date == otherAs.date && event == otherAs.event;
+  EpubMetadataDate copyWith({
+    String? id,
+    String? event,
+    String? date,
+  }) {
+    return EpubMetadataDate(
+      id: id ?? this.id,
+      event: event ?? this.event,
+      date: date ?? this.date,
+    );
   }
+
+  @override
+  List<Object?> get props => [id, event, date];
 }

@@ -8,20 +8,20 @@ import 'package:test/test.dart';
 import '../../random_data_generator.dart';
 
 main() async {
-  final RandomDataGenerator generator =
-      RandomDataGenerator(Random(123778), 10);
+  final RandomDataGenerator generator = RandomDataGenerator(Random(123778), 10);
 
   final EpubNavigationTarget reference = generator.randomEpubNavigationTarget();
 
   late EpubNavigationTarget testNavigationTarget;
   setUp(() async {
-    testNavigationTarget = EpubNavigationTarget()
-      ..klass = reference.klass
-      ..content = reference.content
-      ..iId = reference.iId
-      ..navigationLabels = List.from(reference.navigationLabels!)
-      ..playOrder = reference.playOrder
-      ..value = reference.value;
+    testNavigationTarget = EpubNavigationTarget(
+      content: reference.content,
+      id: reference.id,
+      className: reference.className,
+      navigationLabels: List.from(reference.navigationLabels!),
+      playOrder: reference.playOrder,
+      value: reference.value,
+    );
   });
 
   group("EpubNavigationTarget", () {
@@ -31,29 +31,29 @@ main() async {
       });
 
       test("is false when Class changes", () async {
-        testNavigationTarget.klass = generator.randomString();
+        testNavigationTarget = testNavigationTarget.copyWith(className: generator.randomString());
         expect(testNavigationTarget, isNot(reference));
       });
       test("is false when Content changes", () async {
-        testNavigationTarget.content = generator.randomEpubNavigationContent();
+        testNavigationTarget = testNavigationTarget.copyWith(content: generator.randomEpubNavigationContent());
         expect(testNavigationTarget, isNot(reference));
       });
       test("is false when Id changes", () async {
-        testNavigationTarget.iId = generator.randomString();
+        testNavigationTarget = testNavigationTarget.copyWith(id: generator.randomString());
         expect(testNavigationTarget, isNot(reference));
       });
       test("is false when NavigationLabels changes", () async {
-        testNavigationTarget.navigationLabels = [
+        testNavigationTarget = testNavigationTarget.copyWith(navigationLabels: [
           generator.randomEpubNavigationLabel()
-        ];
+        ]);
         expect(testNavigationTarget, isNot(reference));
       });
       test("is false when PlayOrder changes", () async {
-        testNavigationTarget.playOrder = generator.randomString();
+        testNavigationTarget = testNavigationTarget.copyWith(playOrder: generator.randomString());
         expect(testNavigationTarget, isNot(reference));
       });
       test("is false when Value changes", () async {
-        testNavigationTarget.value = generator.randomString();
+        testNavigationTarget = testNavigationTarget.copyWith(value: generator.randomString());
         expect(testNavigationTarget, isNot(reference));
       });
     });
@@ -64,29 +64,29 @@ main() async {
       });
 
       test("is false when Class changes", () async {
-        testNavigationTarget.klass = generator.randomString();
+        testNavigationTarget = testNavigationTarget.copyWith(className: generator.randomString());
         expect(testNavigationTarget.hashCode, isNot(reference.hashCode));
       });
       test("is false when Content changes", () async {
-        testNavigationTarget.content = generator.randomEpubNavigationContent();
+        testNavigationTarget = testNavigationTarget.copyWith(content: generator.randomEpubNavigationContent());
         expect(testNavigationTarget.hashCode, isNot(reference.hashCode));
       });
       test("is false when Id changes", () async {
-        testNavigationTarget.iId = generator.randomString();
+        testNavigationTarget = testNavigationTarget.copyWith(id: generator.randomString());
         expect(testNavigationTarget.hashCode, isNot(reference.hashCode));
       });
       test("is false when NavigationLabels changes", () async {
-        testNavigationTarget.navigationLabels = [
+        testNavigationTarget = testNavigationTarget.copyWith(navigationLabels: [
           generator.randomEpubNavigationLabel()
-        ];
+        ]);
         expect(testNavigationTarget.hashCode, isNot(reference.hashCode));
       });
       test("is false when PlayOrder changes", () async {
-        testNavigationTarget.playOrder = generator.randomString();
+        testNavigationTarget = testNavigationTarget.copyWith(playOrder: generator.randomString());
         expect(testNavigationTarget.hashCode, isNot(reference.hashCode));
       });
       test("is false when Value changes", () async {
-        testNavigationTarget.value = generator.randomString();
+        testNavigationTarget = testNavigationTarget.copyWith(value: generator.randomString());
         expect(testNavigationTarget.hashCode, isNot(reference.hashCode));
       });
     });

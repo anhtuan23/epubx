@@ -1,33 +1,45 @@
-import 'package:quiver/core.dart';
+import 'package:equatable/equatable.dart';
 
-class EpubMetadataMeta {
-  String? name;
-  String? content;
-  String? id;
-  String? refines;
-  String? property;
-  String? scheme;
-  Map<String, String>? attributes;
+class EpubMetadataMeta extends Equatable {
+  final String? name;
+  final String? content;
+  final String? id;
+  final String? refines;
+  final String? property;
+  final String? scheme;
+  final Map<String, String>? attributes;
+
+  const EpubMetadataMeta({
+    this.name,
+    this.content,
+    this.id,
+    this.refines,
+    this.property,
+    this.scheme,
+    this.attributes,
+  });
 
   @override
-  int get hashCode => hashObjects([
-        name.hashCode,
-        content.hashCode,
-        id.hashCode,
-        refines.hashCode,
-        property.hashCode,
-        scheme.hashCode
-      ]);
+  List<Object?> get props =>
+      [name, content, id, refines, property, scheme, attributes];
 
-  @override
-  bool operator ==(other) {
-    var otherAs = other as EpubMetadataMeta?;
-    if (otherAs == null) return false;
-    return name == otherAs.name &&
-        content == otherAs.content &&
-        id == otherAs.id &&
-        refines == otherAs.refines &&
-        property == otherAs.property &&
-        scheme == otherAs.scheme;
+  EpubMetadataMeta copyWith({
+    String? name,
+    String? content,
+    String? id,
+    String? refines,
+    String? property,
+    String? scheme,
+    Map<String, String>? attributes,
+  }) {
+    return EpubMetadataMeta(
+      name: name ?? this.name,
+      content: content ?? this.content,
+      id: id ?? this.id,
+      refines: refines ?? this.refines,
+      property: property ?? this.property,
+      scheme: scheme ?? this.scheme,
+      attributes: attributes ?? this.attributes,
+    );
   }
 }

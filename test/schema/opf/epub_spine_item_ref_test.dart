@@ -11,15 +11,17 @@ main() async {
   final int length = 10;
   final RandomString randomString = RandomString(Random(123788));
 
-  var reference = EpubSpineItemRef()
-    ..isLinear = true
-    ..idRef = randomString.randomAlpha(length);
+  var reference = EpubSpineItemRef(
+    idRef: randomString.randomAlpha(length),
+    linear: true,
+  );
 
   late EpubSpineItemRef testSpineItemRef;
   setUp(() async {
-    testSpineItemRef = EpubSpineItemRef()
-      ..isLinear = reference.isLinear
-      ..idRef = reference.idRef;
+    testSpineItemRef = EpubSpineItemRef(
+      idRef: reference.idRef,
+      linear: reference.linear,
+    );
   });
 
   group("EpubSpineItemRef", () {
@@ -28,11 +30,11 @@ main() async {
         expect(testSpineItemRef, equals(reference));
       });
       test("is false when IsLinear changes", () async {
-        testSpineItemRef.isLinear = !testSpineItemRef.isLinear!;
+        testSpineItemRef = testSpineItemRef.copyWith(linear: !testSpineItemRef.linear!);
         expect(testSpineItemRef, isNot(reference));
       });
       test("is false when IdRef changes", () async {
-        testSpineItemRef.idRef = randomString.randomAlpha(length);
+        testSpineItemRef = testSpineItemRef.copyWith(idRef: randomString.randomAlpha(length));
         expect(testSpineItemRef, isNot(reference));
       });
     });
@@ -42,11 +44,11 @@ main() async {
         expect(testSpineItemRef.hashCode, equals(reference.hashCode));
       });
       test("is false when IsLinear changes", () async {
-        testSpineItemRef.isLinear = !testSpineItemRef.isLinear!;
+        testSpineItemRef = testSpineItemRef.copyWith(linear: !testSpineItemRef.linear!);
         expect(testSpineItemRef.hashCode, isNot(reference.hashCode));
       });
       test("is false when IdRef changes", () async {
-        testSpineItemRef.idRef = randomString.randomAlpha(length);
+        testSpineItemRef = testSpineItemRef.copyWith(idRef: randomString.randomAlpha(length));
         expect(testSpineItemRef.hashCode, isNot(reference.hashCode));
       });
     });

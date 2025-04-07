@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:archive/archive.dart';
 import 'package:image/image.dart';
-import 'package:quiver/collection.dart' as collections;
-import 'package:quiver/core.dart';
+import 'package:collection/collection.dart';
 
 import '../entities/epub_schema.dart';
 import '../readers/book_cover_reader.dart';
@@ -12,7 +11,7 @@ import 'epub_chapter_ref.dart';
 import 'epub_content_ref.dart';
 
 class EpubBookRef {
-  Archive? _epubArchive;
+  final Archive? _epubArchive;
 
   String? title;
   String? author;
@@ -20,34 +19,30 @@ class EpubBookRef {
   EpubSchema? schema;
   EpubContentRef? content;
 
-  EpubBookRef(Archive epubArchive) {
-    _epubArchive = epubArchive;
-  }
+  EpubBookRef(Archive epubArchive) : _epubArchive = epubArchive;
 
   @override
-  int get hashCode {
-    var objects = [
-      title.hashCode,
-      author.hashCode,
-      schema.hashCode,
-      content.hashCode,
-      ...authorList?.map((author) => author.hashCode) ?? [0],
-    ];
-    return hashObjects(objects);
-  }
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! EpubBookRef) return false;
 
-  @override
-  bool operator ==(other) {
-    if (other is! EpubBookRef) {
-      return false;
-    }
+    final listEquals = const DeepCollectionEquality().equals;
 
     return title == other.title &&
         author == other.author &&
         schema == other.schema &&
         content == other.content &&
-        collections.listsEqual(authorList, other.authorList);
+        listEquals(authorList, other.authorList);
   }
+
+  @override
+  int get hashCode => Object.hash(
+        title,
+        author,
+        schema,
+        content,
+        Object.hashAll(authorList ?? []),
+      );
 
   Archive? epubArchive() {
     return _epubArchive;

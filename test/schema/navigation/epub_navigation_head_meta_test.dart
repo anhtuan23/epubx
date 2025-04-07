@@ -13,10 +13,11 @@ main() async {
 
   late EpubNavigationHeadMeta testNavigationDocTitle;
   setUp(() async {
-    testNavigationDocTitle = EpubNavigationHeadMeta()
-      ..content = reference.content
-      ..name = reference.name
-      ..scheme = reference.scheme;
+    testNavigationDocTitle = EpubNavigationHeadMeta(
+      content: reference.content,
+      name: reference.name,
+      scheme: reference.scheme,
+    );
   });
 
   group("EpubNavigationHeadMeta", () {
@@ -26,15 +27,18 @@ main() async {
       });
 
       test("is false when Content changes", () async {
-        testNavigationDocTitle.content = generator.randomString();
+        testNavigationDocTitle =
+            testNavigationDocTitle.copyWith(content: generator.randomString());
         expect(testNavigationDocTitle, isNot(reference));
       });
       test("is false when Name changes", () async {
-        testNavigationDocTitle.name = generator.randomString();
+        testNavigationDocTitle =
+            testNavigationDocTitle.copyWith(name: generator.randomString());
         expect(testNavigationDocTitle, isNot(reference));
       });
       test("is false when Scheme changes", () async {
-        testNavigationDocTitle.scheme = generator.randomString();
+        testNavigationDocTitle =
+            testNavigationDocTitle.copyWith(scheme: generator.randomString());
         expect(testNavigationDocTitle, isNot(reference));
       });
     });
@@ -45,15 +49,15 @@ main() async {
       });
 
       test("is false when Content changes", () async {
-        testNavigationDocTitle.content = generator.randomString();
+        testNavigationDocTitle = testNavigationDocTitle.copyWith(content: generator.randomString());
         expect(testNavigationDocTitle.hashCode, isNot(reference.hashCode));
       });
       test("is false when Name changes", () async {
-        testNavigationDocTitle.name = generator.randomString();
+        testNavigationDocTitle = testNavigationDocTitle.copyWith(name: generator.randomString());
         expect(testNavigationDocTitle.hashCode, isNot(reference.hashCode));
       });
       test("is false when Scheme changes", () async {
-        testNavigationDocTitle.scheme = generator.randomString();
+        testNavigationDocTitle = testNavigationDocTitle.copyWith(scheme: generator.randomString());
         expect(testNavigationDocTitle.hashCode, isNot(reference.hashCode));
       });
     });

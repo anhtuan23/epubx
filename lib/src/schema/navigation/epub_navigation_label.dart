@@ -1,18 +1,18 @@
-class EpubNavigationLabel {
-  String? text;
+import 'package:equatable/equatable.dart';
 
-  @override
-  int get hashCode => text.hashCode;
+class EpubNavigationLabel extends Equatable {
+  final String? text;
 
-  @override
-  bool operator ==(other) {
-    var otherAs = other as EpubNavigationLabel?;
-    if (otherAs == null) return false;
-    return text == otherAs.text;
+  EpubNavigationLabel({this.text});
+
+  EpubNavigationLabel copyWith({
+    String? text,
+  }) {
+    return EpubNavigationLabel(
+      text: text ?? this.text,
+    );
   }
 
   @override
-  String toString() {
-    return text!;
-  }
+  List<Object?> get props => [text];
 }

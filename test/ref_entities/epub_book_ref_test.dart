@@ -2,7 +2,6 @@ library epubreadertest;
 
 import 'package:archive/archive.dart';
 import 'package:epubx/epubx.dart';
-import 'package:epubx/src/entities/epub_schema.dart';
 import 'package:epubx/src/ref_entities/epub_content_ref.dart';
 import 'package:epubx/src/ref_entities/epub_text_content_file_ref.dart';
 import 'package:test/test.dart';
@@ -58,9 +57,9 @@ main() async {
       });
 
       test("is false when Schema changes", () async {
-        var schema = EpubSchema();
-        schema.contentDirectoryPath = "some/random/path";
-        testBookRef.schema = schema;
+        // Create a new schema instance with the path parameter instead of modifying it
+        testBookRef.schema =
+            EpubSchema(contentDirectoryPath: "some/random/path");
         expect(testBookRef, isNot(reference));
       });
 
@@ -99,10 +98,11 @@ main() async {
         testBookRef.authorList = ["NotOrthros"];
         expect(testBookRef.hashCode, isNot(reference.hashCode));
       });
+
       test("is false when Schema changes", () async {
-        var schema = EpubSchema();
-        schema.contentDirectoryPath = "some/random/path";
-        testBookRef.schema = schema;
+        // Create a new schema instance with the path parameter instead of modifying it
+        testBookRef.schema =
+            EpubSchema(contentDirectoryPath: "some/random/path");
         expect(testBookRef.hashCode, isNot(reference.hashCode));
       });
 

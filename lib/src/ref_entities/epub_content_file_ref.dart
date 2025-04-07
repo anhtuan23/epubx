@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:archive/archive.dart';
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:quiver/core.dart';
 
 import '../entities/epub_content_type.dart';
 import '../utils/zip_path_utils.dart';
@@ -21,19 +20,21 @@ abstract class EpubContentFileRef {
   EpubContentFileRef(this.epubBookRef);
 
   @override
-  int get hashCode =>
-      hash3(fileName.hashCode, contentMimeType.hashCode, contentType.hashCode);
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! EpubContentFileRef) return false;
+
+    return fileName == other.fileName &&
+        contentType == other.contentType &&
+        contentMimeType == other.contentMimeType;
+  }
 
   @override
-  bool operator ==(other) {
-    if (other is! EpubContentFileRef) {
-      return false;
-    }
-
-    return (other.fileName == fileName &&
-        other.contentMimeType == contentMimeType &&
-        other.contentType == contentType);
-  }
+  int get hashCode => Object.hash(
+        fileName,
+        contentType,
+        contentMimeType,
+      );
 
   ArchiveFile getContentFileEntry() {
     var contentFilePath = ZipPathUtils.combine(

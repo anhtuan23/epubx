@@ -1,21 +1,29 @@
-import 'package:quiver/collection.dart' as collections;
-import 'package:quiver/core.dart';
+import 'package:equatable/equatable.dart';
 
 import 'epub_navigation_page_target.dart';
 
-class EpubNavigationPageList {
-  List<EpubNavigationPageTarget>? targets;
+class EpubNavigationPageList extends Equatable {
+  final List<EpubNavigationPageTarget>? pageTargets;
 
-  @override
-  int get hashCode {
-    return hashObjects(targets?.map((target) => target.hashCode) ?? [0]);
+  EpubNavigationPageList({List<EpubNavigationPageTarget>? pageTargets})
+      : pageTargets = pageTargets ?? <EpubNavigationPageTarget>[];
+
+
+  EpubNavigationPageList addPageTarget(EpubNavigationPageTarget pageTarget) {
+    final newTargets = List<EpubNavigationPageTarget>.from(pageTargets ?? [])..add(pageTarget);
+    return copyWith(pageTargets: newTargets);
+  }
+
+  EpubNavigationPageList copyWith({
+    List<EpubNavigationPageTarget>? pageTargets,
+  }) {
+    return EpubNavigationPageList(
+      pageTargets: pageTargets ?? this.pageTargets,
+    );
   }
 
   @override
-  bool operator ==(other) {
-    var otherAs = other as EpubNavigationPageList?;
-    if (otherAs == null) return false;
-
-    return collections.listsEqual(targets, otherAs.targets);
-  }
+  List<Object?> get props => [
+        if (pageTargets != null) ...pageTargets!,
+      ];
 }

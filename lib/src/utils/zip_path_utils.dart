@@ -9,12 +9,12 @@ class ZipPathUtils {
   }
 
   static String? combine(String? directory, String? fileName) {
-    var path;
+    String? path;
     if (directory == null || directory == '') {
       path = fileName;
     } else {
       return '$directory/${fileName!}';
     }
-    return Uri.parse(path).normalizePath().path;
+    return Uri.parse(path!).normalizePath().path;
   }
 }

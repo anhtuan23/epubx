@@ -1,41 +1,41 @@
-import 'package:quiver/collection.dart' as collections;
-import 'package:quiver/core.dart';
+import 'package:equatable/equatable.dart';
 
 import 'epub_navigation_label.dart';
 import 'epub_navigation_target.dart';
 
-class EpubNavigationList {
-  String? id;
-  String? klass;
-  List<EpubNavigationLabel>? navigationLabels;
-  List<EpubNavigationTarget>? navigationTargets;
+class EpubNavigationList extends Equatable {
+  final String? id;
+  final String? className;
+  final List<EpubNavigationLabel>? navigationLabels;
+  final List<EpubNavigationTarget>? navigationTargets;
 
-  @override
-  int get hashCode {
-    var objects = [
-      id.hashCode,
-      klass.hashCode,
-      ...navigationLabels?.map((label) => label.hashCode) ?? [0],
-      ...navigationTargets?.map((target) => target.hashCode) ?? [0]
-    ];
-    return hashObjects(objects);
+  EpubNavigationList({
+    this.id,
+    this.className,
+    List<EpubNavigationLabel>? navigationLabels,
+    List<EpubNavigationTarget>? navigationTargets,
+  })  : navigationLabels = navigationLabels ?? <EpubNavigationLabel>[],
+        navigationTargets = navigationTargets ?? <EpubNavigationTarget>[];
+
+  EpubNavigationList copyWith({
+    String? id,
+    String? className,
+    List<EpubNavigationLabel>? navigationLabels,
+    List<EpubNavigationTarget>? navigationTargets,
+  }) {
+    return EpubNavigationList(
+      id: id ?? this.id,
+      className: className ?? this.className,
+      navigationLabels: navigationLabels ?? this.navigationLabels,
+      navigationTargets: navigationTargets ?? this.navigationTargets,
+    );
   }
 
   @override
-  bool operator ==(other) {
-    var otherAs = other as EpubNavigationList?;
-    if (otherAs == null) return false;
-
-    if (!(id == otherAs.id && klass == otherAs.klass)) {
-      return false;
-    }
-
-    if (!collections.listsEqual(navigationLabels, otherAs.navigationLabels)) {
-      return false;
-    }
-    if (!collections.listsEqual(navigationTargets, otherAs.navigationTargets)) {
-      return false;
-    }
-    return true;
-  }
+  List<Object?> get props => [
+        id,
+        className,
+        if (navigationLabels != null) ...navigationLabels!,
+        if (navigationTargets != null) ...navigationTargets!,
+      ];
 }

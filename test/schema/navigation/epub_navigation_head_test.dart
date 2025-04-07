@@ -8,15 +8,14 @@ import 'package:test/test.dart';
 import '../../random_data_generator.dart';
 
 main() async {
-  final RandomDataGenerator generator =
-      RandomDataGenerator(Random(123778), 10);
+  final RandomDataGenerator generator = RandomDataGenerator(Random(123778), 10);
 
   final EpubNavigationHead reference = generator.randomEpubNavigationHead();
 
   late EpubNavigationHead testGuideReference;
   setUp(() async {
-    testGuideReference = EpubNavigationHead()
-      ..metadata = List.from(reference.metadata!);
+    testGuideReference =
+        EpubNavigationHead(metadata: List.from(reference.metadata!));
   });
 
   group("EpubNavigationHead", () {

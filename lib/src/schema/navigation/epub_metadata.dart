@@ -1,19 +1,26 @@
-import 'package:quiver/core.dart';
+import 'package:equatable/equatable.dart';
 
-class EpubNavigationContent {
-  String? id;
-  String? source;
+class EpubNavigationContent extends Equatable {
+  final String? id;
+  final String? source;
 
-  @override
-  int get hashCode => hash2(id.hashCode, source.hashCode);
+  EpubNavigationContent({
+    this.id,
+    this.source,
+  });
 
-  @override
-  bool operator ==(other) {
-    if (other is! EpubNavigationContent) {
-      return false;
-    }
-    return id == other.id && source == other.source;
+  EpubNavigationContent copyWith({
+    String? id,
+    String? source,
+  }) {
+    return EpubNavigationContent(
+      id: id ?? this.id,
+      source: source ?? this.source,
+    );
   }
+
+  @override
+  List<Object?> get props => [id, source];
 
   @override
   String toString() {

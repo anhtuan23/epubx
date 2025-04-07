@@ -14,8 +14,8 @@ main() async {
 
   late EpubNavigationDocAuthor testNavigationDocAuthor;
   setUp(() async {
-    testNavigationDocAuthor = EpubNavigationDocAuthor()
-      ..authors = List.from(reference.authors!);
+    testNavigationDocAuthor =
+        EpubNavigationDocAuthor(authors: List.from(reference.authors!));
   });
 
   group("EpubNavigationDocAuthor", () {

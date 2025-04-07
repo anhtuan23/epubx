@@ -10,19 +10,16 @@ import 'root_file_path_reader.dart';
 
 class SchemaReader {
   static Future<EpubSchema> readSchema(Archive epubArchive) async {
-    var result = EpubSchema();
-
     var rootFilePath = (await RootFilePathReader.getRootFilePath(epubArchive))!;
     var contentDirectoryPath = ZipPathUtils.getDirectoryPath(rootFilePath);
-    result.contentDirectoryPath = contentDirectoryPath;
-
     var package = await PackageReader.readPackage(epubArchive, rootFilePath);
-    result.package = package;
-
     var navigation = await NavigationReader.readNavigation(
         epubArchive, contentDirectoryPath, package);
-    result.navigation = navigation;
 
-    return result;
+    return EpubSchema(
+      contentDirectoryPath: contentDirectoryPath,
+      package: package,
+      navigation: navigation,
+    );
   }
 }

@@ -7,9 +7,9 @@ import 'package:test/test.dart';
 import 'package:epubx/epubx.dart';
 
 main() async {
-  String fileName = "stevenson-a-childs-garden-of-verses-illustrations.epub";
+  String fileName = "lu_ding_ji_bilingual.epub";
   String fullPath = path.join(io.Directory.current.path, "test", "res", fileName);
-  var targetFile = new io.File(fullPath);
+  var targetFile = io.File(fullPath);
   if (!(await targetFile.exists())) {
     throw Exception("Specified epub file not found: $fullPath");
   }
@@ -29,7 +29,7 @@ main() async {
 
   test("Test can read", () async {
     String baseName = path.join(io.Directory.current.path, "test", "res", "std");
-    io.Directory baseDir = new io.Directory(baseName);
+    io.Directory baseDir = io.Directory(baseName);
     if (!(await baseDir.exists())) {
       throw Exception("Base path does not exist: $baseName");
     }

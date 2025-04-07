@@ -8,7 +8,7 @@ class EpubSpineWriter {
       for (var spineitem in spine.items!) {
         builder.element('itemref', attributes: {
           'idref': spineitem.idRef!,
-          'linear': spineitem.isLinear! ? 'yes' : 'no'
+          'linear': spineitem.linear! ? 'yes' : 'no'
         });
       }
     });

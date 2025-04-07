@@ -13,8 +13,8 @@ main() async {
 
   late EpubNavigationDocTitle testNavigationDocTitle;
   setUp(() async {
-    testNavigationDocTitle = EpubNavigationDocTitle()
-      ..titles = List.from(reference.titles!);
+    testNavigationDocTitle =
+        EpubNavigationDocTitle(titles: List.from(reference.titles!));
   });
 
   group("EpubNavigationDocTitle", () {

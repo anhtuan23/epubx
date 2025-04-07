@@ -1,43 +1,50 @@
-import 'package:quiver/collection.dart' as collections;
-import 'package:quiver/core.dart';
+import 'package:epubx/src/schema/navigation/epub_metadata.dart';
+import 'package:equatable/equatable.dart';
 
-import 'epub_metadata.dart';
 import 'epub_navigation_label.dart';
 
-class EpubNavigationTarget {
-  String? iId;
-  String? klass;
-  String? value;
-  String? playOrder;
-  List<EpubNavigationLabel>? navigationLabels;
-  EpubNavigationContent? content;
+class EpubNavigationTarget extends Equatable {
+  final String? id;
+  final String? className;
+  final String? value;
+  final String? playOrder;
+  final List<EpubNavigationLabel>? navigationLabels;
+  final EpubNavigationContent? content;
 
-  @override
-  int get hashCode {
-    var objects = [
-      iId.hashCode,
-      klass.hashCode,
-      value.hashCode,
-      playOrder.hashCode,
-      content.hashCode,
-      ...navigationLabels!.map((label) => label.hashCode)
-    ];
-    return hashObjects(objects);
+  EpubNavigationTarget({
+    this.id,
+    this.className,
+    this.value,
+    this.playOrder,
+    List<EpubNavigationLabel>? navigationLabels,
+    this.content,
+  }) : navigationLabels = navigationLabels ?? <EpubNavigationLabel>[];
+
+  EpubNavigationTarget copyWith({
+    String? id,
+    String? className,
+    String? value,
+    String? playOrder,
+    List<EpubNavigationLabel>? navigationLabels,
+    EpubNavigationContent? content,
+  }) {
+    return EpubNavigationTarget(
+      id: id ?? this.id,
+      className: className ?? this.className,
+      value: value ?? this.value,
+      playOrder: playOrder ?? this.playOrder,
+      navigationLabels: navigationLabels ?? this.navigationLabels,
+      content: content ?? this.content,
+    );
   }
 
   @override
-  bool operator ==(other) {
-    var otherAs = other as EpubNavigationTarget?;
-    if (otherAs == null) return false;
-
-    if (!(iId == otherAs.iId &&
-        klass == otherAs.klass &&
-        value == otherAs.value &&
-        playOrder == otherAs.playOrder &&
-        content == otherAs.content)) {
-      return false;
-    }
-
-    return collections.listsEqual(navigationLabels, otherAs.navigationLabels);
-  }
+  List<Object?> get props => [
+        id,
+        className,
+        value,
+        playOrder,
+        content,
+        if (navigationLabels != null) ...navigationLabels!,
+      ];
 }

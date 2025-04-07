@@ -1,46 +1,64 @@
-import 'package:quiver/core.dart';
+import 'package:equatable/equatable.dart';
 
-class EpubManifestItem {
-  String? id;
-  String? href;
-  String? mediaType;
-  String? mediaOverlay;
-  String? requiredNamespace;
-  String? requiredModules;
-  String? fallback;
-  String? fallbackStyle;
-  String? properties;
+class EpubManifestItem extends Equatable {
+  final String? id;
+  final String? href;
+  final String? mediaType;
+  final String? mediaOverlay;
+  final String? requiredNamespace;
+  final String? requiredModules;
+  final String? fallback;
+  final String? fallbackStyle;
+  final String? properties;
 
-  @override
-  int get hashCode => hashObjects([
-        id.hashCode,
-        href.hashCode,
-        mediaType.hashCode,
-        mediaOverlay.hashCode,
-        requiredNamespace.hashCode,
-        requiredModules.hashCode,
-        fallback.hashCode,
-        fallbackStyle.hashCode,
-        properties.hashCode
-      ]);
+  EpubManifestItem({
+    this.id,
+    this.href,
+    this.mediaType,
+    this.mediaOverlay,
+    this.requiredNamespace,
+    this.requiredModules,
+    this.fallback,
+    this.fallbackStyle,
+    this.properties,
+  });
 
-  @override
-  bool operator ==(other) {
-    var otherAs = other as EpubManifestItem?;
-    if (otherAs == null) {
-      return false;
-    }
-
-    return id == otherAs.id &&
-        href == otherAs.href &&
-        mediaType == otherAs.mediaType &&
-        mediaOverlay == otherAs.mediaOverlay &&
-        requiredNamespace == otherAs.requiredNamespace &&
-        requiredModules == otherAs.requiredModules &&
-        fallback == otherAs.fallback &&
-        fallbackStyle == otherAs.fallbackStyle &&
-        properties == otherAs.properties;
+  EpubManifestItem copyWith({
+    String? id,
+    String? href,
+    String? mediaType,
+    String? mediaOverlay,
+    String? requiredNamespace,
+    String? requiredModules,
+    String? fallback,
+    String? fallbackStyle,
+    String? properties,
+  }) {
+    return EpubManifestItem(
+      id: id ?? this.id,
+      href: href ?? this.href,
+      mediaType: mediaType ?? this.mediaType,
+      mediaOverlay: mediaOverlay ?? this.mediaOverlay,
+      requiredNamespace: requiredNamespace ?? this.requiredNamespace,
+      requiredModules: requiredModules ?? this.requiredModules,
+      fallback: fallback ?? this.fallback,
+      fallbackStyle: fallbackStyle ?? this.fallbackStyle,
+      properties: properties ?? this.properties,
+    );
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        href,
+        mediaType,
+        mediaOverlay,
+        requiredNamespace,
+        requiredModules,
+        fallback,
+        fallbackStyle,
+        properties
+      ];
 
   @override
   String toString() {

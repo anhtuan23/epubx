@@ -12,18 +12,19 @@ main() async {
   setUp(() async {
     testContent = EpubContent();
 
-    textContentFile = EpubTextContentFile();
-    textContentFile
-      ..content = "Some string"
-      ..contentMimeType = "application/text"
-      ..contentType = EpubContentType.OTHER
-      ..fileName = "orthros.txt";
+    textContentFile = EpubTextContentFile(
+      content: "Some string",
+      contentMimeType: "application/text",
+      contentType: EpubContentType.OTHER,
+      fileName: "orthros.txt",
+    );
 
-    byteContentFile = EpubByteContentFile()
-      ..content = [0, 1, 2, 3]
-      ..contentMimeType = "application/orthros"
-      ..contentType = EpubContentType.OTHER
-      ..fileName = "orthros.bin";
+    byteContentFile = EpubByteContentFile(
+      content: [0, 1, 2, 3],
+      contentMimeType: "application/orthros",
+      contentType: EpubContentType.OTHER,
+      fileName: "orthros.bin",
+    );
   });
 
   group("EpubContent", () {
@@ -33,27 +34,77 @@ main() async {
       });
 
       test("is false when Html changes", () async {
-        testContent.html["someKey"] = textContentFile;
+        var modifiedHtml =
+            Map<String, EpubTextContentFile>.from(testContent.html);
+        modifiedHtml["someKey"] = textContentFile;
+
+        testContent = EpubContent(
+          html: modifiedHtml,
+          css: testContent.css,
+          images: testContent.images,
+          fonts: testContent.fonts,
+          allFiles: testContent.allFiles,
+        );
         expect(testContent, isNot(reference));
       });
 
       test("is false when Css changes", () async {
-        testContent.css["someKey"] = textContentFile;
+        var modifiedCss =
+            Map<String, EpubTextContentFile>.from(testContent.css);
+        modifiedCss["someKey"] = textContentFile;
+
+        testContent = EpubContent(
+          html: testContent.html,
+          css: modifiedCss,
+          images: testContent.images,
+          fonts: testContent.fonts,
+          allFiles: testContent.allFiles,
+        );
         expect(testContent, isNot(reference));
       });
 
       test("is false when Images changes", () async {
-        testContent.images["someKey"] = byteContentFile;
+        var modifiedImages =
+            Map<String, EpubByteContentFile>.from(testContent.images);
+        modifiedImages["someKey"] = byteContentFile;
+
+        testContent = EpubContent(
+          html: testContent.html,
+          css: testContent.css,
+          images: modifiedImages,
+          fonts: testContent.fonts,
+          allFiles: testContent.allFiles,
+        );
         expect(testContent, isNot(reference));
       });
 
       test("is false when Fonts changes", () async {
-        testContent.fonts["someKey"] = byteContentFile;
+        var modifiedFonts =
+            Map<String, EpubByteContentFile>.from(testContent.fonts);
+        modifiedFonts["someKey"] = byteContentFile;
+
+        testContent = EpubContent(
+          html: testContent.html,
+          css: testContent.css,
+          images: testContent.images,
+          fonts: modifiedFonts,
+          allFiles: testContent.allFiles,
+        );
         expect(testContent, isNot(reference));
       });
 
       test("is false when AllFiles changes", () async {
-        testContent.allFiles["someKey"] = byteContentFile;
+        var modifiedAllFiles =
+            Map<String, EpubContentFile>.from(testContent.allFiles);
+        modifiedAllFiles["someKey"] = byteContentFile;
+
+        testContent = EpubContent(
+          html: testContent.html,
+          css: testContent.css,
+          images: testContent.images,
+          fonts: testContent.fonts,
+          allFiles: modifiedAllFiles,
+        );
         expect(testContent, isNot(reference));
       });
     });
@@ -64,27 +115,77 @@ main() async {
       });
 
       test("is false when Html changes", () async {
-        testContent.html["someKey"] = textContentFile;
+        var modifiedHtml =
+            Map<String, EpubTextContentFile>.from(testContent.html);
+        modifiedHtml["someKey"] = textContentFile;
+
+        testContent = EpubContent(
+          html: modifiedHtml,
+          css: testContent.css,
+          images: testContent.images,
+          fonts: testContent.fonts,
+          allFiles: testContent.allFiles,
+        );
         expect(testContent.hashCode, isNot(reference.hashCode));
       });
 
       test("is false when Css changes", () async {
-        testContent.css["someKey"] = textContentFile;
+        var modifiedCss =
+            Map<String, EpubTextContentFile>.from(testContent.css);
+        modifiedCss["someKey"] = textContentFile;
+
+        testContent = EpubContent(
+          html: testContent.html,
+          css: modifiedCss,
+          images: testContent.images,
+          fonts: testContent.fonts,
+          allFiles: testContent.allFiles,
+        );
         expect(testContent.hashCode, isNot(reference.hashCode));
       });
 
       test("is false when Images changes", () async {
-        testContent.images["someKey"] = byteContentFile;
+        var modifiedImages =
+            Map<String, EpubByteContentFile>.from(testContent.images);
+        modifiedImages["someKey"] = byteContentFile;
+
+        testContent = EpubContent(
+          html: testContent.html,
+          css: testContent.css,
+          images: modifiedImages,
+          fonts: testContent.fonts,
+          allFiles: testContent.allFiles,
+        );
         expect(testContent.hashCode, isNot(reference.hashCode));
       });
 
       test("is false when Fonts changes", () async {
-        testContent.fonts["someKey"] = byteContentFile;
+        var modifiedFonts =
+            Map<String, EpubByteContentFile>.from(testContent.fonts);
+        modifiedFonts["someKey"] = byteContentFile;
+
+        testContent = EpubContent(
+          html: testContent.html,
+          css: testContent.css,
+          images: testContent.images,
+          fonts: modifiedFonts,
+          allFiles: testContent.allFiles,
+        );
         expect(testContent.hashCode, isNot(reference.hashCode));
       });
 
       test("is false when AllFiles changes", () async {
-        testContent.allFiles["someKey"] = byteContentFile;
+        var modifiedAllFiles =
+            Map<String, EpubContentFile>.from(testContent.allFiles);
+        modifiedAllFiles["someKey"] = byteContentFile;
+
+        testContent = EpubContent(
+          html: testContent.html,
+          css: testContent.css,
+          images: testContent.images,
+          fonts: testContent.fonts,
+          allFiles: modifiedAllFiles,
+        );
         expect(testContent.hashCode, isNot(reference.hashCode));
       });
     });

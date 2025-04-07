@@ -15,7 +15,7 @@ main() async {
 
   late EpubGuide testGuide;
   setUp(() async {
-    testGuide = EpubGuide()..items = List.from(reference.items!);
+    testGuide = EpubGuide(items: List.from(reference.items!));
   });
 
   group("EpubGuide", () {

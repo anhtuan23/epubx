@@ -1,40 +1,31 @@
-import 'package:quiver/collection.dart' as collections;
-import 'package:quiver/core.dart';
+import 'package:equatable/equatable.dart';
 
-class EpubChapter {
-  String? title;
-  String? contentFileName;
-  String? anchor;
-  String? htmlContent;
-  List<EpubChapter>? subChapters;
-  List<String> otherContentFileNames = [];
+class EpubChapter extends Equatable {
+  final String? title;
+  final String? contentFileName;
+  final String? anchor;
+  final String? htmlContent;
+  final List<EpubChapter>? subChapters;
+  final List<String> otherContentFileNames;
 
-  @override
-  int get hashCode {
-    var objects = [
-      title.hashCode,
-      contentFileName.hashCode,
-      hashObjects(otherContentFileNames),
-      anchor.hashCode,
-      htmlContent.hashCode,
-      ...subChapters?.map((subChapter) => subChapter.hashCode) ?? [0],
-    ];
-    return hashObjects(objects);
-  }
+  EpubChapter({
+    this.title,
+    this.contentFileName,
+    this.anchor,
+    this.htmlContent,
+    this.subChapters,
+    List<String>? otherContentFileNames,
+  }) : otherContentFileNames = otherContentFileNames ?? const <String>[];
 
   @override
-  bool operator ==(other) {
-    if (other is! EpubChapter) {
-      return false;
-    }
-    return title == other.title &&
-        contentFileName == other.contentFileName &&
-        collections.listsEqual(
-            otherContentFileNames, other.otherContentFileNames) &&
-        anchor == other.anchor &&
-        htmlContent == other.htmlContent &&
-        collections.listsEqual(subChapters, other.subChapters);
-  }
+  List<Object?> get props => [
+        title,
+        contentFileName,
+        otherContentFileNames,
+        anchor,
+        htmlContent,
+        subChapters
+      ];
 
   @override
   String toString() {

@@ -1,30 +1,20 @@
-import 'package:quiver/collection.dart' as collections;
-import 'package:quiver/core.dart';
-
 import 'epub_content_file.dart';
+import 'epub_content_type.dart';
 
 class EpubByteContentFile extends EpubContentFile {
-  List<int>? content;
+  final List<int>? content;
+
+  const EpubByteContentFile({
+    String? fileName,
+    EpubContentType? contentType,
+    String? contentMimeType,
+    this.content,
+  }) : super(
+          fileName: fileName,
+          contentType: contentType,
+          contentMimeType: contentMimeType,
+        );
 
   @override
-  int get hashCode {
-    var objects = [
-      contentMimeType.hashCode,
-      contentType.hashCode,
-      fileName.hashCode,
-      ...content?.map((content) => content.hashCode) ?? [0],
-    ];
-    return hashObjects(objects);
-  }
-
-  @override
-  bool operator ==(other) {
-    if (other is! EpubByteContentFile) {
-      return false;
-    }
-    return collections.listsEqual(content, other.content) &&
-        contentMimeType == other.contentMimeType &&
-        contentType == other.contentType &&
-        fileName == other.fileName;
-  }
+  List<Object?> get props => [...super.props, content];
 }

@@ -12,19 +12,21 @@ main() async {
   final int length = 10;
   final RandomString randomString = RandomString(Random(123788));
 
-  var reference = EpubSpine()
-    ..items = [
-      EpubSpineItemRef()
-        ..idRef = randomString.randomAlpha(length)
-        ..idRef = randomString.randomAlpha(length)
-    ]
-    ..tableOfContents = randomString.randomAlpha(length);
+  var reference = EpubSpine(
+    items: [
+      EpubSpineItemRef(
+        idRef: randomString.randomAlpha(length),
+        linear: true,
+      )
+    ],
+    tableOfContents: randomString.randomAlpha(length),
+  );
 
   late EpubSpine testSpine;
   setUp(() async {
-    testSpine = EpubSpine()
-      ..items = List.from(reference.items!)
-      ..tableOfContents = reference.tableOfContents;
+    testSpine = EpubSpine(
+        tableOfContents: reference.tableOfContents,
+        items: List.from(reference.items!));
   });
 
   group("EpubSpine", () {
@@ -33,15 +35,16 @@ main() async {
         expect(testSpine, equals(reference));
       });
       test("is false when Items changes", () async {
-        testSpine.items = [
-          EpubSpineItemRef()
-            ..idRef = randomString.randomAlpha(length)
-            ..isLinear = false
-        ];
+        testSpine = testSpine.copyWith(items : [
+            EpubSpineItemRef(
+              idRef: randomString.randomAlpha(length),
+              linear: false,
+            )
+        ]);
         expect(testSpine, isNot(reference));
       });
       test("is false when TableOfContents changes", () async {
-        testSpine.tableOfContents = randomString.randomAlpha(length);
+        testSpine = testSpine.copyWith(tableOfContents: randomString.randomAlpha(length));
         expect(testSpine, isNot(reference));
       });
     });
@@ -51,15 +54,16 @@ main() async {
         expect(testSpine.hashCode, equals(reference.hashCode));
       });
       test("is false when IsLinear changes", () async {
-        testSpine.items = [
-          EpubSpineItemRef()
-            ..idRef = randomString.randomAlpha(length)
-            ..isLinear = false
-        ];
+        testSpine = testSpine.copyWith(items: [
+          EpubSpineItemRef(
+            idRef: randomString.randomAlpha(length),
+            linear: false,
+          )
+        ]);
         expect(testSpine.hashCode, isNot(reference.hashCode));
       });
       test("is false when TableOfContents changes", () async {
-        testSpine.tableOfContents = randomString.randomAlpha(length);
+        testSpine = testSpine.copyWith(tableOfContents: randomString.randomAlpha(length));
         expect(testSpine.hashCode, isNot(reference.hashCode));
       });
     });
