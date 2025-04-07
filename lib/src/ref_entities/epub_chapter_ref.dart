@@ -6,12 +6,17 @@ import 'package:quiver/core.dart';
 import 'epub_text_content_file_ref.dart';
 
 class EpubChapterRef {
+  // Reference to Text content reader.
   EpubTextContentFileRef? epubTextContentFileRef;
+  // If the chapter is split into multiple files, this list contains the references to content readers of the other files.
+  List<EpubTextContentFileRef> otherTextContentFileRefs = [];
 
   String? title;
   String? contentFileName;
   String? anchor;
   List<EpubChapterRef>? subChapters;
+  // If the chapter is split into multiple files, this list contains the names of the other files.
+  List<String> otherContentFileNames = [];
 
   EpubChapterRef(this.epubTextContentFileRef);
 
@@ -20,6 +25,8 @@ class EpubChapterRef {
     var objects = [
       title.hashCode,
       contentFileName.hashCode,
+      hashObjects(otherTextContentFileRefs),
+      hashObjects(otherContentFileNames),
       anchor.hashCode,
       epubTextContentFileRef.hashCode,
       ...subChapters?.map((subChapter) => subChapter.hashCode) ?? [0],
@@ -33,14 +40,29 @@ class EpubChapterRef {
       return false;
     }
     return title == other.title &&
+        epubTextContentFileRef == other.epubTextContentFileRef &&
         contentFileName == other.contentFileName &&
         anchor == other.anchor &&
-        epubTextContentFileRef == other.epubTextContentFileRef &&
+        collections.listsEqual(
+            otherTextContentFileRefs, other.otherTextContentFileRefs) &&
+        collections.listsEqual(
+            otherContentFileNames, other.otherContentFileNames) &&
         collections.listsEqual(subChapters, other.subChapters);
   }
 
   Future<String> readHtmlContent() async {
-    return epubTextContentFileRef!.readContentAsText();
+    var contentFuture = epubTextContentFileRef!.readContentAsText();
+    if (otherContentFileNames.isNotEmpty) {
+      var allContentFutures = <Future<String>>[contentFuture];
+      for (var otherContentFileRef in otherTextContentFileRefs) {
+        allContentFutures.add(otherContentFileRef.readContentAsText());
+      }
+      return Future.wait(allContentFutures).then((List<String> contents) {
+        return contents.join('');
+      });
+    } else {
+      return contentFuture;
+    }
   }
 
   @override

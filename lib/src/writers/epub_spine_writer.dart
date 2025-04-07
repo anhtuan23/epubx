@@ -6,11 +6,10 @@ class EpubSpineWriter {
     builder.element('spine', attributes: {'toc': spine.tableOfContents!},
         nest: () {
       for (var spineitem in spine.items!) {
-        builder.element('itemref',
-              attributes: {
-                'idref': spineitem.idRef!,
-                'linear': spineitem.isLinear! ? 'no' : 'yes'
-              });
+        builder.element('itemref', attributes: {
+          'idref': spineitem.idRef!,
+          'linear': spineitem.isLinear! ? 'yes' : 'no'
+        });
       }
     });
   }

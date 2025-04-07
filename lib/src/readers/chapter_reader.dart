@@ -18,6 +18,7 @@ class ChapterReader {
     for (var navigationPoint in navigationPoints) {
       String? contentFileName;
       String? anchor;
+      if (navigationPoint.content?.source == null) continue;
       var contentSourceAnchorCharIndex =
           navigationPoint.content!.source!.indexOf('#');
       if (contentSourceAnchorCharIndex == -1) {
@@ -43,6 +44,20 @@ class ChapterReader {
       chapterRef.title = navigationPoint.navigationLabels!.first.text;
       chapterRef.subChapters =
           getChaptersImpl(bookRef, navigationPoint.childNavigationPoints!);
+
+      if (chapterRef.contentFileName!.contains('_split_')) {
+        var fileNamePart = chapterRef.contentFileName!.split('_split_')[0];
+        for (var fileName in bookRef.content!.html.keys) {
+          if (fileName.contains(fileNamePart)) {
+            if (fileName == contentFileName) {
+              continue;
+            }
+            chapterRef.otherTextContentFileRefs
+                .add(bookRef.content!.html[fileName]!);
+            chapterRef.otherContentFileNames.add(fileName);
+          }
+        }
+      }
 
       result.add(chapterRef);
     }

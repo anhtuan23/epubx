@@ -7,12 +7,14 @@ class EpubChapter {
   String? anchor;
   String? htmlContent;
   List<EpubChapter>? subChapters;
+  List<String> otherContentFileNames = [];
 
   @override
   int get hashCode {
     var objects = [
       title.hashCode,
       contentFileName.hashCode,
+      hashObjects(otherContentFileNames),
       anchor.hashCode,
       htmlContent.hashCode,
       ...subChapters?.map((subChapter) => subChapter.hashCode) ?? [0],
@@ -27,6 +29,8 @@ class EpubChapter {
     }
     return title == other.title &&
         contentFileName == other.contentFileName &&
+        collections.listsEqual(
+            otherContentFileNames, other.otherContentFileNames) &&
         anchor == other.anchor &&
         htmlContent == other.htmlContent &&
         collections.listsEqual(subChapters, other.subChapters);
@@ -34,6 +38,6 @@ class EpubChapter {
 
   @override
   String toString() {
-    return 'Title: $title, Subchapter count: ${subChapters!.length}';
+    return 'Title: $title, Subchapter count: ${subChapters?.length ?? 0}';
   }
 }
