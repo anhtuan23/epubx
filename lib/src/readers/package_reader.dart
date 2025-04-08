@@ -56,60 +56,75 @@ class PackageReader {
     return result;
   }
 
+  static EpubManifestItem readManifestItem(XmlElement manifestItemNode) {
+    var result = EpubManifestItem();
+
+    if (manifestItemNode.attributes.isEmpty) {
+      throw Exception('Incorrect EPUB manifest: item attributes are missing.');
+    }
+
+    for (var manifestItemNodeAttribute in manifestItemNode.attributes) {
+      var attributeValue = manifestItemNodeAttribute.value;
+      switch (manifestItemNodeAttribute.name.local.toLowerCase()) {
+        case 'id':
+          result = result.copyWith(id: attributeValue);
+          break;
+        case 'href':
+          // Sanitize the href - replace empty hrefs with a placeholder
+          if (attributeValue.isEmpty) {
+            print(
+                'Warning: Empty href found in manifest item, using placeholder.');
+            result = result.copyWith(href: 'empty-href-placeholder');
+          } else {
+            result = result.copyWith(href: attributeValue);
+          }
+          break;
+        case 'media-type':
+          result = result.copyWith(mediaType: attributeValue);
+          break;
+        case 'required-namespace':
+          result = result.copyWith(requiredNamespace: attributeValue);
+          break;
+        case 'required-modules':
+          result = result.copyWith(requiredModules: attributeValue);
+          break;
+        case 'fallback':
+          result = result.copyWith(fallback: attributeValue);
+          break;
+        case 'fallback-style':
+          result = result.copyWith(fallbackStyle: attributeValue);
+          break;
+        case 'properties':
+          result = result.copyWith(properties: attributeValue);
+          break;
+      }
+    }
+
+    if (result.id == null || result.id!.isEmpty) {
+      throw Exception('Incorrect EPUB manifest: item ID is missing.');
+    }
+
+    // Don't throw an error for empty href, just warn
+    if (result.href == null) {
+      print(
+          'Warning: null href in manifest item ${result.id}, using placeholder.');
+      result = result.copyWith(href: 'empty-href-placeholder');
+    }
+
+    if (result.mediaType == null || result.mediaType!.isEmpty) {
+      throw Exception('Incorrect EPUB manifest: item media type is missing.');
+    }
+
+    return result;
+  }
+
   static EpubManifest readManifest(XmlElement manifestNode) {
     var result = EpubManifest(items: <EpubManifestItem>[]);
     manifestNode.children
         .whereType<XmlElement>()
         .forEach((XmlElement manifestItemNode) {
       if (manifestItemNode.name.local.toLowerCase() == 'item') {
-        var manifestItem = EpubManifestItem();
-        for (var manifestItemNodeAttribute in manifestItemNode.attributes) {
-          var attributeValue = manifestItemNodeAttribute.value;
-          switch (manifestItemNodeAttribute.name.local.toLowerCase()) {
-            case 'id':
-              manifestItem = manifestItem.copyWith(id: attributeValue);
-              break;
-            case 'href':
-              manifestItem = manifestItem.copyWith(href: attributeValue);
-              break;
-            case 'media-type':
-              manifestItem = manifestItem.copyWith(mediaType: attributeValue);
-              break;
-            case 'media-overlay':
-              manifestItem =
-                  manifestItem.copyWith(mediaOverlay: attributeValue);
-              break;
-            case 'required-namespace':
-              manifestItem =
-                  manifestItem.copyWith(requiredNamespace: attributeValue);
-              break;
-            case 'required-modules':
-              manifestItem =
-                  manifestItem.copyWith(requiredModules: attributeValue);
-              break;
-            case 'fallback':
-              manifestItem = manifestItem.copyWith(fallback: attributeValue);
-              break;
-            case 'fallback-style':
-              manifestItem =
-                  manifestItem.copyWith(fallbackStyle: attributeValue);
-              break;
-            case 'properties':
-              manifestItem = manifestItem.copyWith(properties: attributeValue);
-              break;
-          }
-        }
-
-        if (manifestItem.id == null || manifestItem.id!.isEmpty) {
-          throw Exception('Incorrect EPUB manifest: item ID is missing');
-        }
-        if (manifestItem.href == null || manifestItem.href!.isEmpty) {
-          throw Exception('Incorrect EPUB manifest: item href is missing');
-        }
-        if (manifestItem.mediaType == null || manifestItem.mediaType!.isEmpty) {
-          throw Exception(
-              'Incorrect EPUB manifest: item media type is missing');
-        }
+        var manifestItem = readManifestItem(manifestItemNode);
         result.items!.add(manifestItem);
       }
     });

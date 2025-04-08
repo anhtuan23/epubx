@@ -1,6 +1,7 @@
 import '../entities/epub_content_type.dart';
 import '../ref_entities/epub_book_ref.dart';
 import '../ref_entities/epub_byte_content_file_ref.dart';
+import '../ref_entities/epub_content_file_ref.dart';
 import '../ref_entities/epub_content_ref.dart';
 import '../ref_entities/epub_text_content_file_ref.dart';
 
@@ -123,5 +124,16 @@ class ContentReader {
       default:
         return EpubContentType.OTHER;
     }
+  }
+
+  /// Creates a minimal valid content reference for fallback when parsing fails
+  static EpubContentRef createMinimalContentRef() {
+    return EpubContentRef(
+      html: <String, EpubTextContentFileRef>{},
+      css: <String, EpubTextContentFileRef>{},
+      images: <String, EpubByteContentFileRef>{},
+      fonts: <String, EpubByteContentFileRef>{},
+      allFiles: <String, EpubContentFileRef>{},
+    );
   }
 }

@@ -61,14 +61,41 @@ class EpubReader {
     var epubArchive = ZipDecoder().decodeBytes(loadedBytes);
 
     var bookRef = EpubBookRef(epubArchive);
-    bookRef.schema = await SchemaReader.readSchema(epubArchive);
-    bookRef.title = bookRef.schema!.package!.metadata!.titles!
-        .firstWhere((String name) => true, orElse: () => '');
-    bookRef.authorList = bookRef.schema!.package!.metadata!.creators!
-        .map((EpubMetadataCreator creator) => creator.creator)
-        .toList();
-    bookRef.author = bookRef.authorList!.join(', ');
-    bookRef.content = ContentReader.parseContentMap(bookRef);
+    try {
+      bookRef.schema = await SchemaReader.readSchema(epubArchive);
+
+      // Add safe null handling for title
+      if (bookRef.schema?.package?.metadata?.titles != null &&
+          bookRef.schema!.package!.metadata!.titles!.isNotEmpty) {
+        bookRef.title = bookRef.schema!.package!.metadata!.titles!.first;
+      } else {
+        bookRef.title = ''; // Default empty title
+        print('Warning: No title found in EPUB metadata.');
+      }
+
+      // Add safe null handling for author list
+      if (bookRef.schema?.package?.metadata?.creators != null) {
+        bookRef.authorList = bookRef.schema!.package!.metadata!.creators!
+            .map((creator) => creator.creator ?? '')
+            .where((name) => name.isNotEmpty)
+            .toList();
+      } else {
+        bookRef.authorList = <String>[];
+        print('Warning: No authors found in EPUB metadata.');
+      }
+
+      bookRef.author = bookRef.authorList!.join(', ');
+      bookRef.content = ContentReader.parseContentMap(bookRef);
+    } catch (e) {
+      print('Error parsing EPUB structure: $e');
+      // Provide minimal valid structure to prevent null reference errors
+      bookRef.schema ??= SchemaReader.createMinimalSchema();
+      bookRef.title ??= '';
+      bookRef.authorList ??= <String>[];
+      bookRef.author ??= '';
+      bookRef.content ??= ContentReader.createMinimalContentRef();
+    }
+
     return bookRef;
   }
 

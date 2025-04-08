@@ -146,8 +146,33 @@ class NavigationReader {
           .firstWhere((element) => element!.properties == 'nav',
               orElse: () => null);
       if (tocManifestItem == null) {
-        throw Exception(
-            'EPUB parsing error: TOC item, not found in EPUB manifest.');
+        // Instead of throwing an exception, try to find an item that might be a TOC
+        // Common TOC filenames include toc.xhtml, nav.xhtml, etc.
+        var possibleTocItems = package.manifest!.items!
+            .cast<EpubManifestItem?>()
+            .where((element) =>
+                element!.href != null &&
+                (element.href!.toLowerCase().contains('toc') ||
+                    element.href!.toLowerCase().contains('nav') ||
+                    element.href!.toLowerCase().contains('contents')) &&
+                element.mediaType == 'application/xhtml+xml')
+            .toList();
+
+        if (possibleTocItems.isNotEmpty) {
+          tocManifestItem = possibleTocItems.first;
+          print(
+              'Warning: TOC item with "nav" property not found. Using ${tocManifestItem!.href} as fallback.');
+        } else {
+          // Create a minimal navigation structure
+          result = result.copyWith(
+              docTitle:
+                  EpubNavigationDocTitle(titles: package.metadata!.titles),
+              docAuthors: <EpubNavigationDocAuthor>[],
+              navMap: EpubNavigationMap(points: <EpubNavigationPoint>[]));
+          print(
+              'Warning: Could not find TOC item in EPUB manifest. Creating minimal navigation structure.');
+          return result;
+        }
       }
 
       _tocFileEntryPath =
@@ -157,8 +182,14 @@ class NavigationReader {
               file!.name.toLowerCase() == _tocFileEntryPath!.toLowerCase(),
           orElse: () => null);
       if (tocFileEntry == null) {
-        throw Exception(
-            'EPUB parsing error: TOC file $_tocFileEntryPath not found in archive.');
+        // Instead of throwing an exception, create a minimal navigation structure
+        result = result.copyWith(
+            docTitle: EpubNavigationDocTitle(titles: package.metadata!.titles),
+            docAuthors: <EpubNavigationDocAuthor>[],
+            navMap: EpubNavigationMap(points: <EpubNavigationPoint>[]));
+        print(
+            'Warning: TOC file $_tocFileEntryPath not found in archive. Creating minimal navigation structure.');
+        return result;
       }
       //Get relative toc file path
       _tocFileEntryPath =
@@ -173,8 +204,8 @@ class NavigationReader {
           .firstWhere((xml.XmlElement? elem) => elem != null,
               orElse: () => null);
       if (headNode == null) {
-        throw Exception(
-            'EPUB parsing error: TOC file does not contain head element.');
+        // Try to continue even without a head element
+        print('Warning: TOC file does not contain head element.');
       }
 
       // result.docTitle = EpubNavigationDocTitle();
@@ -193,10 +224,23 @@ class NavigationReader {
           .firstWhere((xml.XmlElement? elem) => elem != null,
               orElse: () => null);
       if (navNode == null) {
-        throw Exception(
-            'EPUB parsing error: TOC file does not contain head element.');
+        // Try to create a simple navigation map
+        print(
+            'Warning: TOC file does not contain nav element. Creating minimal navigation structure.');
+        result = result.copyWith(
+            navMap: EpubNavigationMap(points: <EpubNavigationPoint>[]));
+        return result;
       }
-      var navMapNode = navNode.findElements('ol').single;
+
+      var navMapNodes = navNode.findElements('ol').toList();
+      if (navMapNodes.isEmpty) {
+        // No ol elements found, create minimal navigation structure
+        result = result.copyWith(
+            navMap: EpubNavigationMap(points: <EpubNavigationPoint>[]));
+        return result;
+      }
+
+      var navMapNode = navMapNodes.first;
 
       var navMap = readNavigationMapV3(navMapNode);
       result = result.copyWith(navMap: navMap);
@@ -241,6 +285,10 @@ class NavigationReader {
   static EpubNavigationContent readNavigationContentV3(
       xml.XmlElement navigationContentNode) {
     var result = EpubNavigationContent();
+
+    // Default to a safe value for source if we don't find one
+    result = result.copyWith(source: '#');
+
     for (var navigationContentNodeAttribute
         in navigationContentNode.attributes) {
       var attributeValue = navigationContentNodeAttribute.value;
@@ -249,22 +297,30 @@ class NavigationReader {
           result = result.copyWith(id: attributeValue);
           break;
         case 'href':
-          if (_tocFileEntryPath!.length < 2 ||
+          if (attributeValue.isEmpty) {
+            // Use default safe value for empty href
+            print(
+                'Warning: Empty href in navigation content, using placeholder.');
+          } else if (_tocFileEntryPath == null) {
+            // If _tocFileEntryPath is null, use the href directly
+            result = result.copyWith(source: attributeValue);
+          } else if (_tocFileEntryPath!.length < 2 ||
               attributeValue.startsWith(_tocFileEntryPath!)) {
             result = result.copyWith(source: attributeValue);
           } else {
-            result = result.copyWith(
-                source: path.normalize(_tocFileEntryPath! + attributeValue));
+            try {
+              result = result.copyWith(
+                  source: path.normalize(_tocFileEntryPath! + attributeValue));
+            } catch (e) {
+              print('Warning: Error normalizing path: $e');
+              // Use the href directly as a fallback
+              result = result.copyWith(source: attributeValue);
+            }
           }
-
           break;
       }
     }
-    // element with span, the content will be null;
-    // if (result.Source == null || result.Source!.isEmpty) {
-    //   throw Exception(
-    //       'Incorrect EPUB navigation content: content source is missing.');
-    // }
+
     return result;
   }
 
@@ -577,33 +633,58 @@ class NavigationReader {
       childNavigationPoints: <EpubNavigationPoint>[],
     );
 
+    bool hasContent = false;
+    bool hasLabel = false;
+
     navigationPointNode.children
         .whereType<xml.XmlElement>()
         .forEach((xml.XmlElement navigationPointChildNode) {
       switch (navigationPointChildNode.name.local.toLowerCase()) {
         case 'a':
         case 'span':
-          var navigationLabel = readNavigationLabelV3(navigationPointChildNode);
-          result.navigationLabels!.add(navigationLabel);
-          var content = readNavigationContentV3(navigationPointChildNode);
-          result = result.copyWith(content: content);
+          try {
+            var navigationLabel =
+                readNavigationLabelV3(navigationPointChildNode);
+            result.navigationLabels!.add(navigationLabel);
+            hasLabel = true;
+
+            // Try to read content but don't fail if we can't
+            try {
+              var content = readNavigationContentV3(navigationPointChildNode);
+              if (content.source != null) {
+                result = result.copyWith(content: content);
+                hasContent = true;
+              }
+            } catch (e) {
+              print('Warning: Failed to read navigation content: $e');
+            }
+          } catch (e) {
+            print('Warning: Failed to read navigation label: $e');
+          }
           break;
         case 'ol':
-          for (var point
-              in readNavigationMapV3(navigationPointChildNode).points!) {
-            result.childNavigationPoints!.add(point);
+          try {
+            var navMap = readNavigationMapV3(navigationPointChildNode);
+            if (navMap.points != null) {
+              for (var point in navMap.points!) {
+                result.childNavigationPoints!.add(point);
+              }
+            }
+          } catch (e) {
+            print('Warning: Failed to read nested navigation points: $e');
           }
           break;
       }
     });
 
-    if (result.navigationLabels!.isEmpty) {
-      throw Exception(
-          'EPUB parsing error: navigation point ${result.id} should contain at least one navigation label.');
+    // If we don't have a label, create a default one
+    if (!hasLabel) {
+      result.navigationLabels!.add(EpubNavigationLabel(text: 'Untitled'));
     }
-    if (result.content == null) {
-      throw Exception(
-          'EPUB parsing error: navigation point ${result.id} should contain content.');
+
+    // If we don't have content, create a placeholder
+    if (!hasContent) {
+      result = result.copyWith(content: EpubNavigationContent(source: '#'));
     }
 
     return result;

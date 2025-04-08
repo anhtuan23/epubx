@@ -16,9 +16,17 @@ class ChapterReader {
       EpubBookRef bookRef, List<EpubNavigationPoint> navigationPoints) {
     var result = <EpubChapterRef>[];
     for (var navigationPoint in navigationPoints) {
+      // Skip navigation points with null or empty content sources
+      if (navigationPoint.content?.source == null ||
+          navigationPoint.content!.source!.isEmpty ||
+          navigationPoint.content!.source == '#') {
+        print(
+            'Warning: Skipping navigation point with empty content source: ${navigationPoint.navigationLabels?.first.text ?? "Untitled"}');
+        continue;
+      }
+
       String? contentFileName;
       String? anchor;
-      if (navigationPoint.content?.source == null) continue;
       var contentSourceAnchorCharIndex =
           navigationPoint.content!.source!.indexOf('#');
       if (contentSourceAnchorCharIndex == -1) {
@@ -30,11 +38,21 @@ class ChapterReader {
         anchor = navigationPoint.content!.source!
             .substring(contentSourceAnchorCharIndex + 1);
       }
-      contentFileName = Uri.decodeFull(contentFileName!);
+
+      // Handle empty content file names
+      if (contentFileName == null || contentFileName.isEmpty) {
+        print(
+            'Warning: Empty content file name in navigation point: ${navigationPoint.navigationLabels?.first.text ?? "Untitled"}');
+        continue;
+      }
+
+      contentFileName = Uri.decodeFull(contentFileName);
       EpubTextContentFileRef? htmlContentFileRef;
       if (!bookRef.content!.html.containsKey(contentFileName)) {
-        throw Exception(
-            'Incorrect EPUB manifest: item with href = "$contentFileName" is missing.');
+        // Instead of throwing an exception, log a warning and skip this navigation point
+        print(
+            'Warning: Item with href = "$contentFileName" is missing in EPUB manifest. Skipping navigation point: ${navigationPoint.navigationLabels?.first.text ?? "Untitled"}');
+        continue;
       }
 
       htmlContentFileRef = bookRef.content!.html[contentFileName];
