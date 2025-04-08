@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 import 'package:epubx/epubx.dart';
 
 main() async {
-  String fileName = "lu_ding_ji_bilingual.epub";
+  String fileName = "lu_ding_ji_jin_yong.epub";
   String fullPath =
       path.join(io.Directory.current.path, "test", "res", fileName);
   var targetFile = io.File(fullPath);
@@ -19,18 +19,21 @@ main() async {
   test("Test Epub Ref", () async {
     EpubBookRef epubRef = await EpubReader.openBook(bytes);
     var t = await epubRef.getChapters();
-    print("${t.length}");
+    expect(t.isNotEmpty, isTrue,
+        reason: "Book should have at least one chapter, found ${t.length}");
+    print("Number of chapters found: ${t.length}");
   });
+
   test("Test Epub Read", () async {
     EpubBook epubRef = await EpubReader.readBook(bytes);
     expect(epubRef, isNotNull);
     // Check that the author is not null or empty
     expect(epubRef.author != null && epubRef.author!.isNotEmpty, isTrue,
-      reason: "Author should not be null or empty, got '${epubRef.author}'");
-    
+        reason: "Author should not be null or empty, got '${epubRef.author}'");
+
     // Check that the title is not null or empty
     expect(epubRef.title != null && epubRef.title!.isNotEmpty, isTrue,
-      reason: "Title should not be null or empty, got '${epubRef.title}'");
+        reason: "Title should not be null or empty, got '${epubRef.title}'");
   });
 
   test("Test can read", () async {

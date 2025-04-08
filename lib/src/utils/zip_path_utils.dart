@@ -12,9 +12,29 @@ class ZipPathUtils {
     String? path;
     if (directory == null || directory == '') {
       path = fileName;
+      // Don't use Uri.parse() which encodes non-ASCII characters
+      return path != null ? _normalizePath(path) : null;
     } else {
       return '$directory/${fileName!}';
     }
-    return Uri.parse(path!).normalizePath().path;
+  }
+
+  // Helper method to normalize path without encoding non-ASCII characters
+  static String _normalizePath(String path) {
+    // Handle '..' and '.' segments without using Uri.parse()
+    List<String> segments = path.split('/');
+    List<String> result = [];
+
+    for (String segment in segments) {
+      if (segment == '..') {
+        if (result.isNotEmpty) {
+          result.removeLast();
+        }
+      } else if (segment != '.' && segment.isNotEmpty) {
+        result.add(segment);
+      }
+    }
+
+    return result.join('/');
   }
 }
