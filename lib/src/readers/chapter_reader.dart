@@ -5,11 +5,82 @@ import '../schema/navigation/epub_navigation_point.dart';
 
 class ChapterReader {
   static List<EpubChapterRef> getChapters(EpubBookRef bookRef) {
-    if (bookRef.schema!.navigation == null) {
-      return <EpubChapterRef>[];
+    // First try to get chapters from navigation
+    var chaptersFromNavigation = <EpubChapterRef>[];
+    if (bookRef.schema?.navigation != null &&
+        bookRef.schema!.navigation!.navMap != null &&
+        bookRef.schema!.navigation!.navMap!.points != null &&
+        bookRef.schema!.navigation!.navMap!.points!.isNotEmpty) {
+      chaptersFromNavigation =
+          getChaptersImpl(bookRef, bookRef.schema!.navigation!.navMap!.points!);
     }
-    return getChaptersImpl(
-        bookRef, bookRef.schema!.navigation!.navMap!.points!);
+
+    // If we got chapters from navigation, return them
+    if (chaptersFromNavigation.isNotEmpty) {
+      return chaptersFromNavigation;
+    }
+
+    // Otherwise, generate chapters from content files
+    print(
+        'Warning: No chapters found in navigation structure. Creating chapters from content files.');
+    return generateChaptersFromContent(bookRef);
+  }
+
+  // Generate chapters from HTML content files
+  static List<EpubChapterRef> generateChaptersFromContent(EpubBookRef bookRef) {
+    var result = <EpubChapterRef>[];
+
+    // Skip these common non-chapter files
+    var filesToSkip = [
+      'cover',
+      'title',
+      'copyright',
+      'about',
+      'acknowledgements',
+      'dedication',
+      'epigraph',
+      'halftitle',
+      'titlepage',
+      'seal'
+    ];
+
+    // Process HTML files in order
+    var orderedHtmlFiles = bookRef.content!.html.keys.toList()
+      ..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+
+    for (var htmlFilePath in orderedHtmlFiles) {
+      var fileName = htmlFilePath.split('/').last.toLowerCase();
+
+      // Skip common non-chapter files
+      if (filesToSkip.any((skip) => fileName.contains(skip.toLowerCase()))) {
+        continue;
+      }
+
+      var htmlContentFileRef = bookRef.content!.html[htmlFilePath];
+      var chapterRef = EpubChapterRef(htmlContentFileRef);
+
+      // Extract title from the file name for better display
+      var title = fileName.split('.').first;
+      // Remove common prefixes like "Section" or "Chapter"
+      title = title.replaceAll(
+          RegExp(r'^(section|chapter|part)', caseSensitive: false), '');
+      // Clean up the title
+      title = title.trim();
+      if (title.isEmpty) {
+        title = "Chapter $htmlFilePath";
+      } else if (RegExp(r'^\d+$').hasMatch(title)) {
+        title = "Chapter $title";
+      }
+
+      chapterRef.title = title;
+      chapterRef.contentFileName = htmlFilePath;
+      // Initialize subChapters to an empty list to prevent null reference errors
+      chapterRef.subChapters = [];
+      result.add(chapterRef);
+    }
+
+    print('Number of chapters found: ${result.length}');
+    return result;
   }
 
   static List<EpubChapterRef> getChaptersImpl(

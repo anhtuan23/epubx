@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 import 'package:epubx/epubx.dart';
 
 main() async {
-  String fileName = "lu_ding_ji_jin_yong.epub";
+  String fileName = "lu_ding_ji_bilingual.epub";
   String fullPath =
       path.join(io.Directory.current.path, "test", "res", fileName);
   var targetFile = io.File(fullPath);
