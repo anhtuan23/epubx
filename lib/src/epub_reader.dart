@@ -16,7 +16,6 @@ import 'ref_entities/epub_chapter_ref.dart';
 import 'ref_entities/epub_content_file_ref.dart';
 import 'ref_entities/epub_content_ref.dart';
 import 'ref_entities/epub_text_content_file_ref.dart';
-import 'schema/opf/epub_metadata_creator.dart';
 
 /// A class that provides the primary interface to read Epub files.
 ///
