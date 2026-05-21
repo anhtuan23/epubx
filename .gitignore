@@ -29,3 +29,6 @@ pubspec.lock
 
 #Ignore VSCode Directory
 .vscode/
+
+# Ignore MacOS system files
+.DS_Store
