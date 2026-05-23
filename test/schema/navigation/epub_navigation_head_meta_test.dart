@@ -49,15 +49,18 @@ main() async {
       });
 
       test("is false when Content changes", () async {
-        testNavigationDocTitle = testNavigationDocTitle.copyWith(content: generator.randomString());
+        testNavigationDocTitle =
+            testNavigationDocTitle.copyWith(content: generator.randomString());
         expect(testNavigationDocTitle.hashCode, isNot(reference.hashCode));
       });
       test("is false when Name changes", () async {
-        testNavigationDocTitle = testNavigationDocTitle.copyWith(name: generator.randomString());
+        testNavigationDocTitle =
+            testNavigationDocTitle.copyWith(name: generator.randomString());
         expect(testNavigationDocTitle.hashCode, isNot(reference.hashCode));
       });
       test("is false when Scheme changes", () async {
-        testNavigationDocTitle = testNavigationDocTitle.copyWith(scheme: generator.randomString());
+        testNavigationDocTitle =
+            testNavigationDocTitle.copyWith(scheme: generator.randomString());
         expect(testNavigationDocTitle.hashCode, isNot(reference.hashCode));
       });
     });

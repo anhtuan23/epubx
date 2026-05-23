@@ -26,7 +26,8 @@ main() async {
       });
 
       test("is false when Creator changes", () async {
-        testMetadataCreator = testMetadataCreator.copyWith(creator: "NotOrthros");
+        testMetadataCreator =
+            testMetadataCreator.copyWith(creator: "NotOrthros");
         expect(testMetadataCreator, isNot(reference));
       });
       test("is false when FileAs changes", () async {
@@ -45,7 +46,8 @@ main() async {
       });
 
       test("is false when Creator changes", () async {
-        testMetadataCreator = testMetadataCreator.copyWith(creator: "NotOrthros");
+        testMetadataCreator =
+            testMetadataCreator.copyWith(creator: "NotOrthros");
         expect(testMetadataCreator.hashCode, isNot(reference.hashCode));
       });
       test("is false when FileAs changes", () async {

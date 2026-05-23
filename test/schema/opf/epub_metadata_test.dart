@@ -53,23 +53,21 @@ main() async {
         expect(testMetadata, isNot(reference));
       });
       test("is false when Coverages changes", () async {
-        testMetadata =
-            testMetadata.copyWith(coverages: [randomString.randomAlpha(length)]);
+        testMetadata = testMetadata
+            .copyWith(coverages: [randomString.randomAlpha(length)]);
         expect(testMetadata, isNot(reference));
       });
       test("is false when Creators changes", () async {
-        testMetadata =
-            testMetadata.copyWith(creators: [EpubMetadataCreator()]);
+        testMetadata = testMetadata.copyWith(creators: [EpubMetadataCreator()]);
         expect(testMetadata, isNot(reference));
       });
       test("is false when Dates changes", () async {
-        testMetadata =
-            testMetadata.copyWith(dates: [EpubMetadataDate()]);
+        testMetadata = testMetadata.copyWith(dates: [EpubMetadataDate()]);
         expect(testMetadata, isNot(reference));
       });
       test("is false when Description changes", () async {
-        testMetadata =
-            testMetadata.copyWith(description: randomString.randomAlpha(length));
+        testMetadata = testMetadata.copyWith(
+            description: randomString.randomAlpha(length));
         expect(testMetadata, isNot(reference));
       });
       test("is false when Formats changes", () async {
@@ -83,23 +81,22 @@ main() async {
         expect(testMetadata, isNot(reference));
       });
       test("is false when Languages changes", () async {
-        testMetadata =
-            testMetadata.copyWith(languages: [randomString.randomAlpha(length)]);
+        testMetadata = testMetadata
+            .copyWith(languages: [randomString.randomAlpha(length)]);
         expect(testMetadata, isNot(reference));
       });
       test("is false when MetaItems changes", () async {
-        testMetadata =
-            testMetadata.copyWith(metaItems: [EpubMetadataMeta()]);
+        testMetadata = testMetadata.copyWith(metaItems: [EpubMetadataMeta()]);
         expect(testMetadata, isNot(reference));
       });
       test("is false when Publishers changes", () async {
-        testMetadata =
-            testMetadata.copyWith(publishers: [randomString.randomAlpha(length)]);
+        testMetadata = testMetadata
+            .copyWith(publishers: [randomString.randomAlpha(length)]);
         expect(testMetadata, isNot(reference));
       });
       test("is false when Relations changes", () async {
-        testMetadata =
-            testMetadata.copyWith(relations: [randomString.randomAlpha(length)]);
+        testMetadata = testMetadata
+            .copyWith(relations: [randomString.randomAlpha(length)]);
         expect(testMetadata, isNot(reference));
       });
       test("is false when Rights changes", () async {
@@ -139,23 +136,21 @@ main() async {
         expect(testMetadata.hashCode, isNot(reference.hashCode));
       });
       test("is false when Coverages changes", () async {
-        testMetadata =
-            testMetadata.copyWith(coverages: [randomString.randomAlpha(length)]);
+        testMetadata = testMetadata
+            .copyWith(coverages: [randomString.randomAlpha(length)]);
         expect(testMetadata.hashCode, isNot(reference.hashCode));
       });
       test("is false when Creators changes", () async {
-        testMetadata =
-            testMetadata.copyWith(creators: [EpubMetadataCreator()]);
+        testMetadata = testMetadata.copyWith(creators: [EpubMetadataCreator()]);
         expect(testMetadata.hashCode, isNot(reference.hashCode));
       });
       test("is false when Dates changes", () async {
-        testMetadata =
-            testMetadata.copyWith(dates: [EpubMetadataDate()]);
+        testMetadata = testMetadata.copyWith(dates: [EpubMetadataDate()]);
         expect(testMetadata.hashCode, isNot(reference.hashCode));
       });
       test("is false when Description changes", () async {
-        testMetadata =
-            testMetadata.copyWith(description: randomString.randomAlpha(length));
+        testMetadata = testMetadata.copyWith(
+            description: randomString.randomAlpha(length));
         expect(testMetadata.hashCode, isNot(reference.hashCode));
       });
       test("is false when Formats changes", () async {
@@ -169,23 +164,22 @@ main() async {
         expect(testMetadata.hashCode, isNot(reference.hashCode));
       });
       test("is false when Languages changes", () async {
-        testMetadata =
-            testMetadata.copyWith(languages: [randomString.randomAlpha(length)]);
+        testMetadata = testMetadata
+            .copyWith(languages: [randomString.randomAlpha(length)]);
         expect(testMetadata.hashCode, isNot(reference.hashCode));
       });
       test("is false when MetaItems changes", () async {
-        testMetadata =
-            testMetadata.copyWith(metaItems: [EpubMetadataMeta()]);
+        testMetadata = testMetadata.copyWith(metaItems: [EpubMetadataMeta()]);
         expect(testMetadata.hashCode, isNot(reference.hashCode));
       });
       test("is false when Publishers changes", () async {
-        testMetadata =
-            testMetadata.copyWith(publishers: [randomString.randomAlpha(length)]);
+        testMetadata = testMetadata
+            .copyWith(publishers: [randomString.randomAlpha(length)]);
         expect(testMetadata.hashCode, isNot(reference.hashCode));
       });
       test("is false when Relations changes", () async {
-        testMetadata =
-            testMetadata.copyWith(relations: [randomString.randomAlpha(length)]);
+        testMetadata = testMetadata
+            .copyWith(relations: [randomString.randomAlpha(length)]);
         expect(testMetadata.hashCode, isNot(reference.hashCode));
       });
       test("is false when Rights changes", () async {

@@ -30,11 +30,13 @@ main() async {
         expect(testSpineItemRef, equals(reference));
       });
       test("is false when IsLinear changes", () async {
-        testSpineItemRef = testSpineItemRef.copyWith(linear: !testSpineItemRef.linear!);
+        testSpineItemRef =
+            testSpineItemRef.copyWith(linear: !testSpineItemRef.linear!);
         expect(testSpineItemRef, isNot(reference));
       });
       test("is false when IdRef changes", () async {
-        testSpineItemRef = testSpineItemRef.copyWith(idRef: randomString.randomAlpha(length));
+        testSpineItemRef =
+            testSpineItemRef.copyWith(idRef: randomString.randomAlpha(length));
         expect(testSpineItemRef, isNot(reference));
       });
     });
@@ -44,11 +46,13 @@ main() async {
         expect(testSpineItemRef.hashCode, equals(reference.hashCode));
       });
       test("is false when IsLinear changes", () async {
-        testSpineItemRef = testSpineItemRef.copyWith(linear: !testSpineItemRef.linear!);
+        testSpineItemRef =
+            testSpineItemRef.copyWith(linear: !testSpineItemRef.linear!);
         expect(testSpineItemRef.hashCode, isNot(reference.hashCode));
       });
       test("is false when IdRef changes", () async {
-        testSpineItemRef = testSpineItemRef.copyWith(idRef: randomString.randomAlpha(length));
+        testSpineItemRef =
+            testSpineItemRef.copyWith(idRef: randomString.randomAlpha(length));
         expect(testSpineItemRef.hashCode, isNot(reference.hashCode));
       });
     });

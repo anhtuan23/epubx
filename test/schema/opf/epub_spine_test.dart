@@ -35,16 +35,17 @@ main() async {
         expect(testSpine, equals(reference));
       });
       test("is false when Items changes", () async {
-        testSpine = testSpine.copyWith(items : [
-            EpubSpineItemRef(
-              idRef: randomString.randomAlpha(length),
-              linear: false,
-            )
+        testSpine = testSpine.copyWith(items: [
+          EpubSpineItemRef(
+            idRef: randomString.randomAlpha(length),
+            linear: false,
+          )
         ]);
         expect(testSpine, isNot(reference));
       });
       test("is false when TableOfContents changes", () async {
-        testSpine = testSpine.copyWith(tableOfContents: randomString.randomAlpha(length));
+        testSpine = testSpine.copyWith(
+            tableOfContents: randomString.randomAlpha(length));
         expect(testSpine, isNot(reference));
       });
     });
@@ -63,7 +64,8 @@ main() async {
         expect(testSpine.hashCode, isNot(reference.hashCode));
       });
       test("is false when TableOfContents changes", () async {
-        testSpine = testSpine.copyWith(tableOfContents: randomString.randomAlpha(length));
+        testSpine = testSpine.copyWith(
+            tableOfContents: randomString.randomAlpha(length));
         expect(testSpine.hashCode, isNot(reference.hashCode));
       });
     });

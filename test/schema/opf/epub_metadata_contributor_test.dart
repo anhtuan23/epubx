@@ -12,7 +12,7 @@ main() async {
 
   late EpubMetadataContributor testMetadataContributor;
   setUp(() async {
-    testMetadataContributor = EpubMetadataContributor (
+    testMetadataContributor = EpubMetadataContributor(
       contributor: reference.contributor,
       fileAs: reference.fileAs,
       role: reference.role,
@@ -26,15 +26,18 @@ main() async {
       });
 
       test("is false when Contributor changes", () async {
-        testMetadataContributor = testMetadataContributor.copyWith(contributor: "NotOrthros");
+        testMetadataContributor =
+            testMetadataContributor.copyWith(contributor: "NotOrthros");
         expect(testMetadataContributor, isNot(reference));
       });
       test("is false when FileAs changes", () async {
-        testMetadataContributor = testMetadataContributor.copyWith(fileAs: "Small");
+        testMetadataContributor =
+            testMetadataContributor.copyWith(fileAs: "Small");
         expect(testMetadataContributor, isNot(reference));
       });
       test("is false when Role changes", () async {
-        testMetadataContributor = testMetadataContributor.copyWith(role: "Copier");
+        testMetadataContributor =
+            testMetadataContributor.copyWith(role: "Copier");
         expect(testMetadataContributor, isNot(reference));
       });
     });
@@ -45,15 +48,18 @@ main() async {
       });
 
       test("is false when Contributor changes", () async {
-        testMetadataContributor = testMetadataContributor.copyWith(contributor: "NotOrthros");
+        testMetadataContributor =
+            testMetadataContributor.copyWith(contributor: "NotOrthros");
         expect(testMetadataContributor.hashCode, isNot(reference.hashCode));
       });
       test("is false when FileAs changes", () async {
-        testMetadataContributor = testMetadataContributor.copyWith(fileAs: "Small");
+        testMetadataContributor =
+            testMetadataContributor.copyWith(fileAs: "Small");
         expect(testMetadataContributor.hashCode, isNot(reference.hashCode));
       });
       test("is false when Role changes", () async {
-        testMetadataContributor = testMetadataContributor.copyWith(role: "Copier");
+        testMetadataContributor =
+            testMetadataContributor.copyWith(role: "Copier");
         expect(testMetadataContributor.hashCode, isNot(reference.hashCode));
       });
     });

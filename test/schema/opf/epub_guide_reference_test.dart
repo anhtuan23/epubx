@@ -8,8 +8,7 @@ import 'package:test/test.dart';
 import '../../random_data_generator.dart';
 
 main() async {
-  final RandomDataGenerator generator =
-      RandomDataGenerator(Random(123778), 10);
+  final RandomDataGenerator generator = RandomDataGenerator(Random(123778), 10);
 
   var reference = generator.randomEpubGuideReference();
 
@@ -29,18 +28,21 @@ main() async {
       });
 
       test("is false when Href changes", () async {
-        testGuideReference = testGuideReference.copyWith(href: "A different href");
+        testGuideReference =
+            testGuideReference.copyWith(href: "A different href");
 
         expect(testGuideReference, isNot(reference));
       });
 
       test("is false when Title changes", () async {
-        testGuideReference = testGuideReference.copyWith(title: "A different Title");
+        testGuideReference =
+            testGuideReference.copyWith(title: "A different Title");
         expect(testGuideReference, isNot(reference));
       });
 
       test("is false when Type changes", () async {
-        testGuideReference = testGuideReference.copyWith(type: "Some different type");
+        testGuideReference =
+            testGuideReference.copyWith(type: "Some different type");
         expect(testGuideReference, isNot(reference));
       });
     });
@@ -51,18 +53,21 @@ main() async {
       });
 
       test("is false when Href changes", () async {
-        testGuideReference = testGuideReference.copyWith(href: "A different href");
+        testGuideReference =
+            testGuideReference.copyWith(href: "A different href");
 
         expect(testGuideReference.hashCode, isNot(reference.hashCode));
       });
 
       test("is false when Title changes", () async {
-        testGuideReference = testGuideReference.copyWith(title: "A different Title");
+        testGuideReference =
+            testGuideReference.copyWith(title: "A different Title");
         expect(testGuideReference.hashCode, isNot(reference.hashCode));
       });
 
       test("is false when Type changes", () async {
-        testGuideReference = testGuideReference.copyWith(type: "Some different type");
+        testGuideReference =
+            testGuideReference.copyWith(type: "Some different type");
         expect(testGuideReference.hashCode, isNot(reference.hashCode));
       });
     });

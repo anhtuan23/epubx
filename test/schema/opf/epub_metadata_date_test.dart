@@ -28,7 +28,8 @@ main() async {
         expect(testMetadataDate, isNot(reference));
       });
       test("is false when Event changes", () async {
-        testMetadataDate = testMetadataDate.copyWith(event: "A non important event");
+        testMetadataDate =
+            testMetadataDate.copyWith(event: "A non important event");
         expect(testMetadataDate, isNot(reference));
       });
     });
@@ -43,7 +44,8 @@ main() async {
         expect(testMetadataDate.hashCode, isNot(reference.hashCode));
       });
       test("is false when Event changes", () async {
-        testMetadataDate = testMetadataDate.copyWith(event: "A non important event");
+        testMetadataDate =
+            testMetadataDate.copyWith(event: "A non important event");
         expect(testMetadataDate.hashCode, isNot(reference.hashCode));
       });
     });

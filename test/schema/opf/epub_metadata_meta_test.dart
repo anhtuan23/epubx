@@ -36,7 +36,8 @@ main() async {
         expect(testMetadataMeta, isNot(reference));
       });
       test("is false when Property changes", () async {
-        testMetadataMeta = testMetadataMeta.copyWith(property: "A different Property");
+        testMetadataMeta =
+            testMetadataMeta.copyWith(property: "A different Property");
         expect(testMetadataMeta, isNot(reference));
       });
       test("is false when Name changes", () async {
@@ -44,7 +45,8 @@ main() async {
         expect(testMetadataMeta, isNot(reference));
       });
       test("is false when Content changes", () async {
-        testMetadataMeta = testMetadataMeta.copyWith(content: "A different Content");
+        testMetadataMeta =
+            testMetadataMeta.copyWith(content: "A different Content");
         expect(testMetadataMeta, isNot(reference));
       });
       test("is false when Id changes", () async {
@@ -52,7 +54,8 @@ main() async {
         expect(testMetadataMeta, isNot(reference));
       });
       test("is false when Scheme changes", () async {
-        testMetadataMeta = testMetadataMeta.copyWith(scheme: "A strange scheme");
+        testMetadataMeta =
+            testMetadataMeta.copyWith(scheme: "A strange scheme");
         expect(testMetadataMeta, isNot(reference));
       });
     });
@@ -66,7 +69,8 @@ main() async {
         expect(testMetadataMeta.hashCode, isNot(reference.hashCode));
       });
       test("is false when Property changes", () async {
-        testMetadataMeta = testMetadataMeta.copyWith(property: "A different property");
+        testMetadataMeta =
+            testMetadataMeta.copyWith(property: "A different property");
         expect(testMetadataMeta.hashCode, isNot(reference.hashCode));
       });
       test("is false when Name changes", () async {
@@ -74,7 +78,8 @@ main() async {
         expect(testMetadataMeta.hashCode, isNot(reference.hashCode));
       });
       test("is false when Content changes", () async {
-        testMetadataMeta = testMetadataMeta.copyWith(content: "Different Content");
+        testMetadataMeta =
+            testMetadataMeta.copyWith(content: "Different Content");
         expect(testMetadataMeta.hashCode, isNot(reference.hashCode));
       });
       test("is false when Id changes", () async {
@@ -82,7 +87,8 @@ main() async {
         expect(testMetadataMeta.hashCode, isNot(reference.hashCode));
       });
       test("is false when Scheme changes", () async {
-        testMetadataMeta = testMetadataMeta.copyWith(scheme: "A strange scheme");
+        testMetadataMeta =
+            testMetadataMeta.copyWith(scheme: "A strange scheme");
         expect(testMetadataMeta.hashCode, isNot(reference.hashCode));
       });
     });

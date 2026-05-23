@@ -34,11 +34,13 @@ main() async {
       });
 
       test("is false when Fallback changes", () async {
-        testManifestItem = testManifestItem.copyWith(fallback: "Some Different Fallback");
+        testManifestItem =
+            testManifestItem.copyWith(fallback: "Some Different Fallback");
         expect(testManifestItem, isNot(reference));
       });
       test("is false when FallbackStyle changes", () async {
-        testManifestItem = testManifestItem.copyWith(fallbackStyle: "A less than Stylish Fallback");
+        testManifestItem = testManifestItem.copyWith(
+            fallbackStyle: "A less than Stylish Fallback");
         expect(testManifestItem, isNot(reference));
       });
       test("is false when Href changes", () async {
@@ -46,7 +48,8 @@ main() async {
         expect(testManifestItem, isNot(reference));
       });
       test("is false when Id changes", () async {
-        testManifestItem = testManifestItem.copyWith(id: "A guaranteed unique Id");
+        testManifestItem =
+            testManifestItem.copyWith(id: "A guaranteed unique Id");
         expect(testManifestItem, isNot(reference));
       });
       test("is false when MediaType changes", () async {
@@ -54,11 +57,13 @@ main() async {
         expect(testManifestItem, isNot(reference));
       });
       test("is false when RequiredModules changes", () async {
-        testManifestItem = testManifestItem.copyWith(requiredModules: "A non node-js module");
+        testManifestItem =
+            testManifestItem.copyWith(requiredModules: "A non node-js module");
         expect(testManifestItem, isNot(reference));
       });
       test("is false when RequiredNamespaces changes", () async {
-        testManifestItem = testManifestItem.copyWith(requiredNamespace: "Some non-dot net namespace");
+        testManifestItem = testManifestItem.copyWith(
+            requiredNamespace: "Some non-dot net namespace");
         expect(testManifestItem, isNot(reference));
       });
     });
@@ -69,11 +74,13 @@ main() async {
       });
 
       test("is false when Fallback changes", () async {
-        testManifestItem = testManifestItem.copyWith(fallback: "Some Different Fallback");
+        testManifestItem =
+            testManifestItem.copyWith(fallback: "Some Different Fallback");
         expect(testManifestItem.hashCode, isNot(reference.hashCode));
       });
       test("is false when FallbackStyle changes", () async {
-        testManifestItem = testManifestItem.copyWith(fallbackStyle: "A less than Stylish Fallback");
+        testManifestItem = testManifestItem.copyWith(
+            fallbackStyle: "A less than Stylish Fallback");
         expect(testManifestItem.hashCode, isNot(reference.hashCode));
       });
       test("is false when Href changes", () async {
@@ -81,7 +88,8 @@ main() async {
         expect(testManifestItem.hashCode, isNot(reference.hashCode));
       });
       test("is false when Id changes", () async {
-        testManifestItem = testManifestItem.copyWith(id: "A guaranteed unique Id");
+        testManifestItem =
+            testManifestItem.copyWith(id: "A guaranteed unique Id");
         expect(testManifestItem.hashCode, isNot(reference.hashCode));
       });
       test("is false when MediaType changes", () async {
@@ -89,11 +97,13 @@ main() async {
         expect(testManifestItem.hashCode, isNot(reference.hashCode));
       });
       test("is false when RequiredModules changes", () async {
-        testManifestItem = testManifestItem.copyWith(requiredModules: "A non node-js module");
+        testManifestItem =
+            testManifestItem.copyWith(requiredModules: "A non node-js module");
         expect(testManifestItem.hashCode, isNot(reference.hashCode));
       });
       test("is false when RequiredNamespaces changes", () async {
-        testManifestItem = testManifestItem.copyWith(requiredNamespace: "Some non-dot net namespace");
+        testManifestItem = testManifestItem.copyWith(
+            requiredNamespace: "Some non-dot net namespace");
         expect(testManifestItem.hashCode, isNot(reference.hashCode));
       });
     });
