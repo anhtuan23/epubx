@@ -56,10 +56,8 @@ abstract class EpubContentFileRef {
 
   List<int> openContentStream(ArchiveFile contentFileEntry) {
     var contentStream = <int>[];
-    if (contentFileEntry.content == null) {
-      throw Exception(
-          'Incorrect EPUB file: content file "$fileName" specified in manifest is not found.');
-    }
+    // archive 4 exposes ArchiveFile.content as non-null. Missing manifest
+    // entries are already rejected by getContentFileEntry() before this point.
     contentStream.addAll(contentFileEntry.content);
     return contentStream;
   }

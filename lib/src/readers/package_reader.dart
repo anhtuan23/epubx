@@ -259,7 +259,7 @@ class PackageReader {
   static EpubMetadataDate readMetadataDate(XmlElement metadataDateNode) {
     var result = EpubMetadataDate();
     var eventAttribute = metadataDateNode.getAttribute('event',
-        namespace: metadataDateNode.name.namespaceUri);
+        namespaceUri: metadataDateNode.name.namespaceUri);
     if (eventAttribute != null && eventAttribute.isNotEmpty) {
       result = result.copyWith(event: eventAttribute);
     }
@@ -344,7 +344,7 @@ class PackageReader {
         XmlDocument.parse(convert.utf8.decode(rootFileEntry.content));
     var opfNamespace = 'http://www.idpf.org/2007/opf';
     var packageNode = containerDocument
-        .findElements('package', namespace: opfNamespace)
+        .findElements('package', namespaceUri: opfNamespace)
         .firstWhere((XmlElement? elem) => elem != null);
     var result = EpubPackage();
     var epubVersionValue = packageNode.getAttribute('version');
@@ -356,7 +356,7 @@ class PackageReader {
       throw Exception('Unsupported EPUB version: $epubVersionValue.');
     }
     var metadataNode = packageNode
-        .findElements('metadata', namespace: opfNamespace)
+        .findElements('metadata', namespaceUri: opfNamespace)
         .cast<XmlElement?>()
         .firstWhere((XmlElement? elem) => elem != null);
     if (metadataNode == null) {
@@ -365,7 +365,7 @@ class PackageReader {
     var metadata = readMetadata(metadataNode, result.version);
     result = result.copyWith(metadata: metadata);
     var manifestNode = packageNode
-        .findElements('manifest', namespace: opfNamespace)
+        .findElements('manifest', namespaceUri: opfNamespace)
         .cast<XmlElement?>()
         .firstWhere((XmlElement? elem) => elem != null);
     if (manifestNode == null) {
@@ -375,7 +375,7 @@ class PackageReader {
     result = result.copyWith(manifest: manifest);
 
     var spineNode = packageNode
-        .findElements('spine', namespace: opfNamespace)
+        .findElements('spine', namespaceUri: opfNamespace)
         .cast<XmlElement?>()
         .firstWhere((XmlElement? elem) => elem != null);
     if (spineNode == null) {
@@ -384,7 +384,7 @@ class PackageReader {
     var spine = readSpine(spineNode);
     result = result.copyWith(spine: spine);
     var guideNode = packageNode
-        .findElements('guide', namespace: opfNamespace)
+        .findElements('guide', namespaceUri: opfNamespace)
         .firstWhereOrNull((XmlElement? elem) => elem != null);
     if (guideNode != null) {
       var guide = readGuide(guideNode);

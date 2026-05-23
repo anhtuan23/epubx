@@ -16,7 +16,7 @@ class EpubNavigationWriter {
       'version': '2005-1',
       'lang': 'en',
     }, nest: () {
-      builder.namespace(_namespace);
+      builder.namespaceUri(null, _namespace);
 
       writeNavigationHead(builder, navigation.head!);
       writeNavigationDocTitle(builder, navigation.docTitle!);

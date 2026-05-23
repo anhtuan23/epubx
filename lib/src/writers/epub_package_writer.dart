@@ -17,7 +17,7 @@ class EpubPackageWriter {
       'version': package.version == EpubVersion.Epub2 ? '2.0' : '3.0',
       'unique-identifier': 'etextno',
     }, nest: () {
-      builder.namespace(_namespace);
+      builder.namespaceUri(null, _namespace);
 
       EpubMetadataWriter.writeMetadata(
           builder, package.metadata, package.version);

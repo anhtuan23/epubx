@@ -67,7 +67,7 @@ class NavigationReader {
 
       var ncxNamespace = 'http://www.daisy.org/z3986/2005/ncx/';
       var ncxNode = containerDocument
-          .findAllElements('ncx', namespace: ncxNamespace)
+          .findAllElements('ncx', namespaceUri: ncxNamespace)
           .cast<xml.XmlElement?>()
           .firstWhere((xml.XmlElement? elem) => elem != null,
               orElse: () => null);
@@ -77,7 +77,7 @@ class NavigationReader {
       }
 
       var headNode = ncxNode
-          .findAllElements('head', namespace: ncxNamespace)
+          .findAllElements('head', namespaceUri: ncxNamespace)
           .cast<xml.XmlElement?>()
           .firstWhere((xml.XmlElement? elem) => elem != null,
               orElse: () => null);
@@ -89,7 +89,7 @@ class NavigationReader {
       var navigationHead = readNavigationHead(headNode);
       result = result.copyWith(head: navigationHead);
       var docTitleNode = ncxNode
-          .findElements('docTitle', namespace: ncxNamespace)
+          .findElements('docTitle', namespaceUri: ncxNamespace)
           .cast<xml.XmlElement?>()
           .firstWhere((xml.XmlElement? elem) => elem != null,
               orElse: () => null);
@@ -103,14 +103,14 @@ class NavigationReader {
           docTitle: navigationDocTitle,
           docAuthors: <EpubNavigationDocAuthor>[]);
       ncxNode
-          .findElements('docAuthor', namespace: ncxNamespace)
+          .findElements('docAuthor', namespaceUri: ncxNamespace)
           .forEach((xml.XmlElement docAuthorNode) {
         var navigationDocAuthor = readNavigationDocAuthor(docAuthorNode);
         result.docAuthors!.add(navigationDocAuthor);
       });
 
       var navMapNode = ncxNode
-          .findElements('navMap', namespace: ncxNamespace)
+          .findElements('navMap', namespaceUri: ncxNamespace)
           .cast<xml.XmlElement?>()
           .firstWhere((xml.XmlElement? elem) => elem != null,
               orElse: () => null);
@@ -122,7 +122,7 @@ class NavigationReader {
       var navMap = readNavigationMap(navMapNode);
       result = result.copyWith(navMap: navMap);
       var pageListNode = ncxNode
-          .findElements('pageList', namespace: ncxNamespace)
+          .findElements('pageList', namespaceUri: ncxNamespace)
           .cast<xml.XmlElement?>()
           .firstWhere((xml.XmlElement? elem) => elem != null,
               orElse: () => null);
@@ -133,7 +133,7 @@ class NavigationReader {
 
       result = result.copyWith(navLists: <EpubNavigationList>[]);
       ncxNode
-          .findElements('navList', namespace: ncxNamespace)
+          .findElements('navList', namespaceUri: ncxNamespace)
           .forEach((xml.XmlElement navigationListNode) {
         var navigationList = readNavigationList(navigationListNode);
         result.navLists!.add(navigationList);
@@ -247,7 +247,7 @@ class NavigationReader {
 
       //TODO : Implement pagesLists
 //      xml.XmlElement pageListNode = ncxNode
-//          .findElements("pageList", namespace: ncxNamespace)
+//          .findElements("pageList", namespaceUri: ncxNamespace)
 //          .firstWhere((xml.XmlElement elem) => elem != null,
 //          orElse: () => null);
 //      if (pageListNode != null) {
@@ -408,7 +408,7 @@ class NavigationReader {
     var result = EpubNavigationLabel();
 
     var navigationLabelTextNode = navigationLabelNode
-        .findElements('text', namespace: navigationLabelNode.name.namespaceUri)
+        .findElements('text', namespaceUri: navigationLabelNode.name.namespaceUri)
         .firstWhereOrNull((xml.XmlElement? elem) => elem != null);
     if (navigationLabelTextNode == null) {
       throw Exception(

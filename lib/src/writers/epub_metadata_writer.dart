@@ -12,70 +12,70 @@ class EpubMetadataWriter {
       XmlBuilder builder, EpubMetadata? meta, EpubVersion? version) {
     builder.element(
       'metadata',
-      namespaces: {_opf_namespace: 'opf', _dc_namespace: 'dc'},
+      namespaceUris: {'opf': _opf_namespace, 'dc': _dc_namespace},
       nest: () {
         meta!
           ..titles?.forEach((item) =>
-              builder.element('title', nest: item, namespace: _dc_namespace))
+              builder.element('title', nest: item, namespaceUri: _dc_namespace))
           ..creators?.forEach((item) =>
-              builder.element('creator', namespace: _dc_namespace, nest: () {
+              builder.element('creator', namespaceUri: _dc_namespace, nest: () {
                 if (item.role != null) {
                   builder.attribute('role', item.role!,
-                      namespace: _opf_namespace);
+                      namespaceUri: _opf_namespace);
                 }
                 if (item.fileAs != null) {
                   builder.attribute('file-as', item.fileAs!,
-                      namespace: _opf_namespace);
+                      namespaceUri: _opf_namespace);
                 }
                 builder.text(item.creator!);
               }))
-          ..subjects?.forEach((item) =>
-              builder.element('subject', namespace: _dc_namespace, nest: item))
+          ..subjects?.forEach((item) => builder.element('subject',
+              namespaceUri: _dc_namespace, nest: item))
           ..publishers?.forEach((item) => builder.element('publisher',
-              namespace: _dc_namespace, nest: item))
-          ..contributors?.forEach((item) => builder
-                  .element('contributor', namespace: _dc_namespace, nest: () {
+              namespaceUri: _dc_namespace, nest: item))
+          ..contributors?.forEach((item) => builder.element('contributor',
+                  namespaceUri: _dc_namespace, nest: () {
                 if (item.role != null) {
                   builder.attribute('role', item.role!,
-                      namespace: _opf_namespace);
+                      namespaceUri: _opf_namespace);
                 }
                 if (item.fileAs != null) {
                   builder.attribute('file-as', item.fileAs!,
-                      namespace: _opf_namespace);
+                      namespaceUri: _opf_namespace);
                 }
                 builder.text(item.contributor!);
               }))
           ..dates?.forEach((date) =>
-              builder.element('date', namespace: _dc_namespace, nest: () {
+              builder.element('date', namespaceUri: _dc_namespace, nest: () {
                 if (date.event != null) {
                   builder.attribute('event', date.event!,
-                      namespace: _opf_namespace);
+                      namespaceUri: _opf_namespace);
                 }
                 builder.text(date.date!);
               }))
           ..types?.forEach((type) =>
-              builder.element('type', namespace: _dc_namespace, nest: type))
-          ..formats?.forEach((format) =>
-              builder.element('format', namespace: _dc_namespace, nest: format))
-          ..identifiers?.forEach((id) =>
-              builder.element('identifier', namespace: _dc_namespace, nest: () {
+              builder.element('type', namespaceUri: _dc_namespace, nest: type))
+          ..formats?.forEach((format) => builder.element('format',
+              namespaceUri: _dc_namespace, nest: format))
+          ..identifiers?.forEach((id) => builder
+                  .element('identifier', namespaceUri: _dc_namespace, nest: () {
                 if (id.id != null) builder.attribute('id', id.id!);
                 if (id.scheme != null) {
                   builder.attribute('scheme', id.scheme!,
-                      namespace: _opf_namespace);
+                      namespaceUri: _opf_namespace);
                 }
                 builder.text(id.identifier!);
               }))
-          ..sources?.forEach((item) =>
-              builder.element('source', namespace: _dc_namespace, nest: item))
-          ..languages?.forEach((item) =>
-              builder.element('language', namespace: _dc_namespace, nest: item))
-          ..relations?.forEach((item) =>
-              builder.element('relation', namespace: _dc_namespace, nest: item))
-          ..coverages?.forEach((item) =>
-              builder.element('coverage', namespace: _dc_namespace, nest: item))
-          ..rights?.forEach((item) =>
-              builder.element('rights', namespace: _dc_namespace, nest: item))
+          ..sources?.forEach((item) => builder.element('source',
+              namespaceUri: _dc_namespace, nest: item))
+          ..languages?.forEach((item) => builder.element('language',
+              namespaceUri: _dc_namespace, nest: item))
+          ..relations?.forEach((item) => builder.element('relation',
+              namespaceUri: _dc_namespace, nest: item))
+          ..coverages?.forEach((item) => builder.element('coverage',
+              namespaceUri: _dc_namespace, nest: item))
+          ..rights?.forEach((item) => builder.element('rights',
+              namespaceUri: _dc_namespace, nest: item))
           ..metaItems?.forEach((metaitem) => builder.element('meta', nest: () {
                 if (version == EpubVersion.Epub2) {
                   if (metaitem.name != null) {
@@ -102,7 +102,7 @@ class EpubMetadataWriter {
 
         if (meta.description != null) {
           builder.element('description',
-              namespace: _dc_namespace, nest: meta.description);
+              namespaceUri: _dc_namespace, nest: meta.description);
         }
       },
     );
