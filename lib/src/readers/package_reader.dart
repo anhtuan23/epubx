@@ -22,7 +22,6 @@ import '../schema/opf/epub_version.dart';
 
 class PackageReader {
   static String _normalizedLocalName(XmlName name) {
-    // xml 7 preserves namespace prefixes more strictly in some parsed names.
     // EPUB metadata can legally arrive as `dc:title` or as a namespace-aware
     // local `title`; readers should handle both spellings the same way.
     return name.local.toLowerCase().split(':').last;
@@ -266,7 +265,7 @@ class PackageReader {
   static EpubMetadataDate readMetadataDate(XmlElement metadataDateNode) {
     var result = EpubMetadataDate();
     var eventAttribute = metadataDateNode.getAttribute('event',
-        namespaceUri: metadataDateNode.name.namespaceUri);
+        namespace: metadataDateNode.name.namespaceUri);
     if (eventAttribute != null && eventAttribute.isNotEmpty) {
       result = result.copyWith(event: eventAttribute);
     }
@@ -351,7 +350,7 @@ class PackageReader {
         XmlDocument.parse(convert.utf8.decode(rootFileEntry.content));
     var opfNamespace = 'http://www.idpf.org/2007/opf';
     var packageNode = containerDocument
-        .findElements('package', namespaceUri: opfNamespace)
+        .findElements('package', namespace: opfNamespace)
         .firstWhere((XmlElement? elem) => elem != null);
     var result = EpubPackage();
     var epubVersionValue = packageNode.getAttribute('version');
@@ -363,7 +362,7 @@ class PackageReader {
       throw Exception('Unsupported EPUB version: $epubVersionValue.');
     }
     var metadataNode = packageNode
-        .findElements('metadata', namespaceUri: opfNamespace)
+        .findElements('metadata', namespace: opfNamespace)
         .cast<XmlElement?>()
         .firstWhere((XmlElement? elem) => elem != null);
     if (metadataNode == null) {
@@ -372,7 +371,7 @@ class PackageReader {
     var metadata = readMetadata(metadataNode, result.version);
     result = result.copyWith(metadata: metadata);
     var manifestNode = packageNode
-        .findElements('manifest', namespaceUri: opfNamespace)
+        .findElements('manifest', namespace: opfNamespace)
         .cast<XmlElement?>()
         .firstWhere((XmlElement? elem) => elem != null);
     if (manifestNode == null) {
@@ -382,7 +381,7 @@ class PackageReader {
     result = result.copyWith(manifest: manifest);
 
     var spineNode = packageNode
-        .findElements('spine', namespaceUri: opfNamespace)
+        .findElements('spine', namespace: opfNamespace)
         .cast<XmlElement?>()
         .firstWhere((XmlElement? elem) => elem != null);
     if (spineNode == null) {
@@ -391,7 +390,7 @@ class PackageReader {
     var spine = readSpine(spineNode);
     result = result.copyWith(spine: spine);
     var guideNode = packageNode
-        .findElements('guide', namespaceUri: opfNamespace)
+        .findElements('guide', namespace: opfNamespace)
         .firstWhereOrNull((XmlElement? elem) => elem != null);
     if (guideNode != null) {
       var guide = readGuide(guideNode);

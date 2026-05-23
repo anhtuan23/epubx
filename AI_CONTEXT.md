@@ -36,12 +36,12 @@ reading metadata, extracting content, and laying out book chapters.
 ## Modernization Guidance
 
 - Dependency modernization on 2026-05-23 moved this package to current Dart 3
-  compatible constraints: `archive ^4.0.9`, `xml ^7.0.1`, `image ^4.9.0`,
-  `collection ^1.19.1`, `path ^1.9.1`, `equatable ^2.0.8`, `test ^1.31.1`,
-  and `lints ^6.1.0`.
-- XML 7 deprecates the old `namespace` and `namespaces` parameters. Reader and
-  writer code now uses `namespaceUri`, `namespaceUris`, and
-  `XmlBuilder.namespaceUri`.
+  compatible constraints: `archive ^4.0.9`, `xml ^6.6.1`,
+  `image >=4.3.0 <4.9.0`, `collection ^1.19.1`, `path ^1.9.1`,
+  `equatable ^2.0.8`, `test ^1.31.1`, and `lints ^6.1.0`.
+- `xml` stays on the 6.6 line because `image` versions before 4.9.0 depend on
+  XML 6, while image 4.9.x requires a newer `meta` than the active Flutter SDK
+  pins through `flutter_test`.
 - archive 4 exposes `ArchiveFile.content` as non-null. Missing EPUB manifest
   entries are checked before content stream copying in
   `EpubContentFileRef.getContentFileEntry()`.

@@ -20,7 +20,7 @@ class RootFilePathReader {
         xml.XmlDocument.parse(convert.utf8.decode(containerFileEntry.content));
     var packageElement = containerDocument
         .findAllElements('container',
-            namespaceUri: 'urn:oasis:names:tc:opendocument:xmlns:container')
+            namespace: 'urn:oasis:names:tc:opendocument:xmlns:container')
         .firstWhereOrNull((xml.XmlElement? elem) => elem != null);
     if (packageElement == null) {
       throw Exception('EPUB parsing error: Invalid epub container');

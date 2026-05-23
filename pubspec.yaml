@@ -10,8 +10,10 @@ environment:
 dependencies:
   archive: ^4.0.9
   quiver: ^3.2.1
-  xml: ^7.0.1
-  image: ^4.9.0
+  xml: ^6.6.1
+  # Keep image below 4.9.0 because image 4.9.x requires xml 7 and a newer meta
+  # than the active Flutter SDK pins through flutter_test.
+  image: ">=4.3.0 <4.9.0"
   collection: ^1.19.1
   path: ^1.9.1
   equatable: ^2.0.8
