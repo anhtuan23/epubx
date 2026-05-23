@@ -1,9 +1,9 @@
-library epubreadertest;
+library;
 
 import 'package:epubx/epubx.dart';
 import 'package:test/test.dart';
 
-main() async {
+Future<void> main() async {
   var reference = EpubChapter(
     anchor: "anchor",
     contentFileName: "orthros",

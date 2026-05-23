@@ -1,9 +1,9 @@
-library epubreadertest;
+library;
 
 import 'package:epubx/epubx.dart';
 import 'package:test/test.dart';
 
-main() async {
+Future<void> main() async {
   final Image defaultImage = Image(width: 100, height: 100);
   final chapters = [EpubChapter()];
   final content = EpubContent();

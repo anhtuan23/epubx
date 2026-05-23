@@ -1,4 +1,4 @@
-library epubreadertest;
+library;
 
 import 'dart:io' as io;
 
@@ -6,7 +6,7 @@ import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 import 'package:epubx/epubx.dart';
 
-main() async {
+Future<void> main() async {
   String fileName = "lu_ding_ji_bilingual.epub";
   String fullPath =
       path.join(io.Directory.current.path, "test", "res", fileName);

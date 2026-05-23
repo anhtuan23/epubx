@@ -1,10 +1,10 @@
-library epubreadertest;
+library;
 
 import 'package:epubx/src/schema/opf/epub_manifest.dart';
 import 'package:epubx/src/schema/opf/epub_manifest_item.dart';
 import 'package:test/test.dart';
 
-main() async {
+Future<void> main() async {
   var reference = EpubManifest(items: [
     EpubManifestItem(
         fallback: "Some Fallback",

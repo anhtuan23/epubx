@@ -1,11 +1,11 @@
-library epubreadertest;
+library;
 
 import 'package:archive/archive.dart';
 import 'package:epubx/epubx.dart';
 import 'package:epubx/src/ref_entities/epub_byte_content_file_ref.dart';
 import 'package:test/test.dart';
 
-main() async {
+Future<void> main() async {
   Archive arch = Archive();
   EpubBookRef ref = EpubBookRef(arch);
 

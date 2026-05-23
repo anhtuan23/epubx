@@ -1,10 +1,10 @@
-library epubtest;
+library;
 
 import 'package:test/test.dart';
 
 import 'package:epubx/epubx.dart';
 
-main() {
+void main() {
   test("Enum One", () {
     expect(
         EnumFromString<Simple>(Simple.values).get("ONE"), equals(Simple.ONE));
