@@ -45,13 +45,14 @@ reading metadata, extracting content, and laying out book chapters.
 - archive 4 exposes `ArchiveFile.content` as non-null. Missing EPUB manifest
   entries are checked before content stream copying in
   `EpubContentFileRef.getContentFileEntry()`.
-- Full `dart test` currently has two known validation blockers after the
-  dependency upgrade: `test/epub_image_test.dart` requires an untracked fixture
-  named `MY VAMPIRE SYSTEM (JKSManga) (Z-Library).epub`, and
-  `test/epub_writer_test.dart` still fails the deep `EpubBook` round-trip
-  equality check after writing and rereading `alicesAdventuresUnderGround.epub`.
-  Treat EPUB writer changes as unfinished until that round-trip diff is
-  investigated directly.
+- The old `test/epub_image_test.dart` depended on an untracked local EPUB
+  fixture named `MY VAMPIRE SYSTEM (JKSManga) (Z-Library).epub`; it was removed
+  during modernization because the repository could not validate it.
+- The `alicesAdventuresUnderGround.epub` writer round-trip test is a useful
+  regression check for OPF metadata and spine parsing. The 2026-05-23 upgrade
+  fixed two reader bugs it exposed: `EpubMetadata.copyWith` must preserve
+  existing values, and EPUB spine `linear` is true unless the attribute is
+  explicitly `no`.
 
 ## Tests And Fixtures
 

@@ -21,6 +21,13 @@ import '../schema/opf/epub_spine_item_ref.dart';
 import '../schema/opf/epub_version.dart';
 
 class PackageReader {
+  static String _normalizedLocalName(XmlName name) {
+    // xml 7 preserves namespace prefixes more strictly in some parsed names.
+    // EPUB metadata can legally arrive as `dc:title` or as a namespace-aware
+    // local `title`; readers should handle both spellings the same way.
+    return name.local.toLowerCase().split(':').last;
+  }
+
   static EpubGuide readGuide(XmlElement guideNode) {
     var result = EpubGuide(items: <EpubGuideReference>[]);
     guideNode.children
@@ -155,7 +162,7 @@ class PackageReader {
         .whereType<XmlElement>()
         .forEach((XmlElement metadataItemNode) {
       var innerText = metadataItemNode.innerText;
-      switch (metadataItemNode.name.local.toLowerCase()) {
+      switch (_normalizedLocalName(metadataItemNode.name)) {
         case 'title':
           result = result.addItem(title: innerText);
           break;
@@ -225,7 +232,7 @@ class PackageReader {
     for (var metadataContributorNodeAttribute
         in metadataContributorNode.attributes) {
       var attributeValue = metadataContributorNodeAttribute.value;
-      switch (metadataContributorNodeAttribute.name.local.toLowerCase()) {
+      switch (_normalizedLocalName(metadataContributorNodeAttribute.name)) {
         case 'role':
           result = result.copyWith(role: attributeValue);
           break;
@@ -243,7 +250,7 @@ class PackageReader {
     var result = EpubMetadataCreator();
     for (var metadataCreatorNodeAttribute in metadataCreatorNode.attributes) {
       var attributeValue = metadataCreatorNodeAttribute.value;
-      switch (metadataCreatorNodeAttribute.name.local.toLowerCase()) {
+      switch (_normalizedLocalName(metadataCreatorNodeAttribute.name)) {
         case 'role':
           result = result.copyWith(role: attributeValue);
           break;
@@ -273,7 +280,7 @@ class PackageReader {
     for (var metadataIdentifierNodeAttribute
         in metadataIdentifierNode.attributes) {
       var attributeValue = metadataIdentifierNodeAttribute.value;
-      switch (metadataIdentifierNodeAttribute.name.local.toLowerCase()) {
+      switch (_normalizedLocalName(metadataIdentifierNodeAttribute.name)) {
         case 'id':
           result = result.copyWith(id: attributeValue);
           break;
@@ -413,9 +420,11 @@ class PackageReader {
         }
         spineItemRef = spineItemRef.copyWith(idRef: idRefAttribute);
         var linearAttribute = spineItemNode.getAttribute('linear');
+        // EPUB treats a missing linear attribute as readable spine content.
+        // Only the explicit value "no" marks a non-linear item.
         spineItemRef = spineItemRef.copyWith(
             linear: linearAttribute == null ||
-                (linearAttribute.toLowerCase() == 'no'));
+                linearAttribute.toLowerCase() != 'no');
         result = result.addItem(spineItemRef);
       }
     });
