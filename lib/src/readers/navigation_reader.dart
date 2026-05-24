@@ -26,8 +26,6 @@ import '../schema/opf/epub_package.dart';
 import '../utils/enum_from_string.dart';
 import '../utils/zip_path_utils.dart';
 
-// ignore: omit_local_variable_types
-
 class NavigationReader {
   static String? _tocFileEntryPath;
 
