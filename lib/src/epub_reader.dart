@@ -85,7 +85,7 @@ class EpubReader {
 
       bookRef.author = bookRef.authorList!.join(', ');
       bookRef.content = ContentReader.parseContentMap(bookRef);
-    } catch (e) {
+    } on Exception catch (e) {
       print('Error parsing EPUB structure: $e');
       // Provide minimal valid structure to prevent null reference errors
       bookRef.schema ??= SchemaReader.createMinimalSchema();

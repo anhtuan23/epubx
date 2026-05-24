@@ -48,7 +48,7 @@ class BookCoverReader {
           await coverImageContentFileRef!.readContentAsBytes();
       var retval = images.decodeImage(Uint8List.fromList(coverImageContent));
       return retval;
-    } catch (e) {
+    } on Exception catch (e) {
       print('Error reading book cover: $e');
       return null;
     }

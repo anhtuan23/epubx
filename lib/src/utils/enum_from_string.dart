@@ -9,7 +9,7 @@ class EnumFromString<T> {
       var x = enumValues
           .firstWhere((f) => f.toString().toUpperCase() == value.toUpperCase());
       return x;
-    } catch (e) {
+    } on StateError {
       return null;
     }
   }

@@ -140,7 +140,7 @@ class ContentReader {
   static String _safeUriDecode(String input) {
     try {
       return Uri.decodeFull(input);
-    } catch (e) {
+    } on FormatException {
       return input;
     }
   }

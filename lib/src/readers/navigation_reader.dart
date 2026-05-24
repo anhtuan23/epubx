@@ -309,7 +309,7 @@ class NavigationReader {
             try {
               result = result.copyWith(
                   source: path.normalize(_tocFileEntryPath! + attributeValue));
-            } catch (e) {
+            } on Exception catch (e) {
               print('Warning: Error normalizing path: $e');
               // Use the href directly as a fallback
               result = result.copyWith(source: attributeValue);
@@ -653,10 +653,10 @@ class NavigationReader {
                 result = result.copyWith(content: content);
                 hasContent = true;
               }
-            } catch (e) {
+            } on Exception catch (e) {
               print('Warning: Failed to read navigation content: $e');
             }
-          } catch (e) {
+          } on Exception catch (e) {
             print('Warning: Failed to read navigation label: $e');
           }
           break;
@@ -668,7 +668,7 @@ class NavigationReader {
                 result.childNavigationPoints!.add(point);
               }
             }
-          } catch (e) {
+          } on Exception catch (e) {
             print('Warning: Failed to read nested navigation points: $e');
           }
           break;

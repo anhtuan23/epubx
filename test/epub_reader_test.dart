@@ -59,7 +59,7 @@ Future<void> main() async {
         List<int> bytes = await tf.readAsBytes();
         EpubBook book = await EpubReader.readBook(bytes);
         expect(book, isNotNull);
-      } catch (e) {
+      } on Exception catch (e) {
         print("File: ${fe.path}, Exception: $e");
         fail("Caught error...");
       }
@@ -88,7 +88,7 @@ Future<void> main() async {
         var bytes = await tf.readAsBytes();
         var ref = await EpubReader.openBook(bytes);
         expect(ref, isNotNull);
-      } catch (e) {
+      } on Exception catch (e) {
         print("File: ${fe.path}, Exception: $e");
         fail("Caught error...");
       }
@@ -108,7 +108,7 @@ Future<void> main() async {
         try {
           await EpubReader.openBook(bytes);
           print("Success opening childrens-literature.epub");
-        } catch (e, stackTrace) {
+        } on Exception catch (e, stackTrace) {
           print("Error opening childrens-literature.epub: $e");
           print("Stack trace: $stackTrace");
         }
@@ -116,14 +116,14 @@ Future<void> main() async {
         try {
           await EpubReader.readBook(bytes);
           print("Success reading childrens-literature.epub");
-        } catch (e, stackTrace) {
+        } on Exception catch (e, stackTrace) {
           print("Error reading childrens-literature.epub: $e");
           print("Stack trace: $stackTrace");
         }
       } else {
         print("File not found: childrens-literature.epub");
       }
-    } catch (e) {
+    } on Exception catch (e) {
       print("Exception accessing childrens-literature.epub: $e");
     }
 
@@ -136,7 +136,7 @@ Future<void> main() async {
         try {
           await EpubReader.openBook(bytes);
           print("Success opening wasteland-otf-obf.epub");
-        } catch (e, stackTrace) {
+        } on Exception catch (e, stackTrace) {
           print("Error opening wasteland-otf-obf.epub: $e");
           print("Stack trace: $stackTrace");
         }
@@ -144,14 +144,14 @@ Future<void> main() async {
         try {
           await EpubReader.readBook(bytes);
           print("Success reading wasteland-otf-obf.epub");
-        } catch (e, stackTrace) {
+        } on Exception catch (e, stackTrace) {
           print("Error reading wasteland-otf-obf.epub: $e");
           print("Stack trace: $stackTrace");
         }
       } else {
         print("File not found: wasteland-otf-obf.epub");
       }
-    } catch (e) {
+    } on Exception catch (e) {
       print("Exception accessing wasteland-otf-obf.epub: $e");
     }
   });
