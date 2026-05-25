@@ -243,7 +243,7 @@ class NavigationReader {
       var navMap = readNavigationMapV3(navMapNode);
       result = result.copyWith(navMap: navMap);
 
-      //TODO : Implement pagesLists
+      // TODO(anhtuan23): Implement pagesLists
 //      xml.XmlElement pageListNode = ncxNode
 //          .findElements("pageList", namespace: ncxNamespace)
 //          .firstWhere((xml.XmlElement elem) => elem != null,
