@@ -10,6 +10,8 @@ linter:
     constant_identifier_names: false
 
 analyzer:
+  errors:
+    todo: ignore
   exclude:
     - example/**
     - "**/*.g.dart"
